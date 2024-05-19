@@ -1,0 +1,97 @@
+@{
+  ViewData["Title"] = "Nhân viên";
+  var lstNhanVien = ViewData["lstNhanVien"] as List<NhanVien>;
+  var lstBoPhan = ViewData["lstBoPhan"] as List<BoPhan>;
+  var lstTrangThai = ViewData["lstTrangThai"] as List<TrangThaiNhanVien>;
+  int stt = 0;
+}
+@* ************** Content ************** *@
+<h4 class="py-3 mb-4">
+  <span class="text-muted fw-light">Nhân viên</span>
+</h4>
+
+<!-- Basic Bootstrap Table -->
+<div class="card">
+  <h5 class="card-header">Danh sách nhân viên</h5>
+  <div class="table-responsive text-nowrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên nhân viên</th>
+          <th>Chức vụ</th>
+          <th>Bộ phận</th>
+          <th>Trạng thái</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        @foreach (var nhanVien in lstNhanVien)
+        {
+          var trangThai = lstTrangThai.Where(item => item.IdtrangThai == nhanVien.IdtrangThai).Select(item =>
+          item.TrangThai).FirstOrDefault();
+          var boPhan = lstBoPhan.Where(item => item.IdboPhan == nhanVien.IdboPhan).Select(item =>
+          item.TenBoPhan).FirstOrDefault();
+          <tr>
+            <td>@(++stt)</td>
+            <td>
+              <a href="#" class="detail-link" data-id="@nhanVien.MaNhanVien">
+                @nhanVien.TenNhanVien
+              </a>
+            </td>
+            <td>
+              @if (nhanVien.IdChucVu == 1)
+              {
+                <span class="badge bg-label-primary me-1">Trưởng phòng</span>
+              }
+              else @if (nhanVien.IdChucVu == 2)
+              {
+                <span class="badge bg-label-success me-1">Tổ trưởng</span>
+              }
+              else @if (nhanVien.IdChucVu == 3)
+              {
+                <span class="badge bg-label-warning me-1">Nhân viên</span>
+              }
+            </td>
+            <td>
+              @(boPhan != null ? boPhan : "")
+            </td>
+            <td>
+              @(trangThai != null ? trangThai : "")
+            </td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
+                    class="bx bx-dots-vertical-rounded"></i></button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                  <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--/ Basic Bootstrap Table -->
+<hr class="my-5">
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var detailLinks = document.querySelectorAll('.detail-link');
+
+    detailLinks.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ 'a'
+
+            var idNhanVien = this.getAttribute('data-id');
+
+            // Chuyển hướng đến trang "View Detail" và gửi thêm tham số idNhanVien
+            window.location.href = '/NhanVien/Detail?id=' + idNhanVien;
+        });
+    });
+  });
+
+</script>
