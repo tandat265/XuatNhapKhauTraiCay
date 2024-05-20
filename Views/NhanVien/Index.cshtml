@@ -3,6 +3,7 @@
   var lstNhanVien = ViewData["lstNhanVien"] as List<NhanVien>;
   var lstBoPhan = ViewData["lstBoPhan"] as List<BoPhan>;
   var lstTrangThai = ViewData["lstTrangThai"] as List<TrangThaiNhanVien>;
+  var lstChucVu = ViewData["lstChucVu"] as List<ChucVu>;
   int stt = 0;
 }
 @* ************** Content ************** *@
@@ -28,10 +29,10 @@
       <tbody class="table-border-bottom-0">
         @foreach (var nhanVien in lstNhanVien)
         {
-          var trangThai = lstTrangThai.Where(item => item.IdtrangThai == nhanVien.IdtrangThai).Select(item =>
-          item.TrangThai).FirstOrDefault();
+          var trangThai = lstTrangThai.Where(item => item.IdtrangThai == nhanVien.IdtrangThai).FirstOrDefault();
           var boPhan = lstBoPhan.Where(item => item.IdboPhan == nhanVien.IdboPhan).Select(item =>
           item.TenBoPhan).FirstOrDefault();
+          var chucVu = lstChucVu.Where(item => item.IdChucVu == nhanVien.IdChucVu).Select(item => item.ChucVu1).FirstOrDefault();
           <tr>
             <td>@(++stt)</td>
             <td>
@@ -40,31 +41,34 @@
               </a>
             </td>
             <td>
-              @if (nhanVien.IdChucVu == 1)
-              {
-                <span class="badge bg-label-primary me-1">Trưởng phòng</span>
-              }
-              else @if (nhanVien.IdChucVu == 2)
-              {
-                <span class="badge bg-label-success me-1">Tổ trưởng</span>
-              }
-              else @if (nhanVien.IdChucVu == 3)
-              {
-                <span class="badge bg-label-warning me-1">Nhân viên</span>
-              }
+              @(chucVu != null ? chucVu : "")
             </td>
             <td>
               @(boPhan != null ? boPhan : "")
             </td>
             <td>
-              @(trangThai != null ? trangThai : "")
+              @if (trangThai != null)
+              {
+                @if (trangThai.IdtrangThai == 1)
+                {
+                  <span class="badge bg-label-primary me-1">@(trangThai.TrangThai)</span>
+                }
+                else @if (nhanVien.IdChucVu == 2)
+                {
+                  <span class="badge bg-label-success me-1">@(trangThai.TrangThai)</span>
+                }
+                else @if (nhanVien.IdChucVu == 3)
+                {
+                  <span class="badge bg-label-warning me-1">@(trangThai.TrangThai)</span>
+                }
+              }
             </td>
             <td>
               <div class="dropdown">
                 <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
                     class="bx bx-dots-vertical-rounded"></i></button>
                 <div class="dropdown-menu">
-                  <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                  <a class="dropdown-item" asp-action="Edit" asp-route-id="@nhanVien.MaNhanVien"><i class="bx bx-edit-alt me-1"></i> Edit</a>
                   <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
                 </div>
               </div>
