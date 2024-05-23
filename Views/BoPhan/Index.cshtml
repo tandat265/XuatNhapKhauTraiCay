@@ -1,6 +1,6 @@
 @{
-  ViewData["Title"] = "Chức vụ";
-  var lstChucVu = ViewData["lstChucVu"] as List<ChucVu>;
+  ViewData["Title"] = "Bộ phận";
+  var lstBoPhan = ViewData["lstBoPhan"] as List<BoPhan>;
   var stt = 0;
 }
 
@@ -11,7 +11,7 @@
   </div>
 } *@
 <div class="card">
-  <h5 class="card-header">Danh sách chức vụ</h5>
+  <h5 class="card-header">Danh sách bộ phận</h5>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
       <li class="breadcrumb-item">
@@ -24,18 +24,18 @@
       <thead >
         <tr>
           <th>STT</th>
-          <th>Chức vụ</th>
+          <th>Tên bộ phận</th>
           <th></th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        @foreach (var chucVu in lstChucVu)
+        @foreach (var boPhan in lstBoPhan)
         {
-          <tr data-id="@chucVu.IdChucVu">
+          <tr data-id="@boPhan.IdboPhan">
             <td>@(++stt)</td>
             <td>
-              <span class="view-mode">@chucVu.ChucVu1</span>
-              <input class="edit-mode form-control" type="text" value="@chucVu.ChucVu1" style="display:none;">
+              <span class="view-mode">@boPhan.TenBoPhan</span>
+              <input class="edit-mode form-control" type="text" value="@boPhan.TenBoPhan" style="display:none;">
             </td>
             <td>
               <div class="dropdown view-mode">
@@ -44,7 +44,7 @@
                 </button>
                 <div class="dropdown-menu">
                   <a class="dropdown-item edit-button" href="#"><i class="bx bx-edit-alt me-1"></i> Chỉnh sửa</a>
-                  <a class="dropdown-item delete-button" data-id="@chucVu.IdChucVu"><i class="bx bx-trash me-1"></i> Xoá</a>
+                  <a class="dropdown-item delete-button" data-id="@boPhan.IdboPhan"><i class="bx bx-trash me-1"></i> Xoá</a>
                 </div>
               </div>
               <div class="edit-mode" style="display:none;">
@@ -75,7 +75,7 @@
         $('.delete-button').on('click', function(e) {
           var id = $(this).data('id');
           $.ajax({
-              url: '/ChucVu/Delete',
+              url: '/BoPhan/Delete',
               type: 'POST',
               data: {
                   id: id
@@ -101,11 +101,11 @@
             var trangthai = row.find('input:eq(0)').val();
             console.log(id);
             $.ajax({
-                url: '/ChucVu/Edit',
+                url: '/BoPhan/Edit',
                 type: 'POST',
                 data: {
                     id: id,
-                    chucvu: trangthai
+                    bophan: trangthai
                 },
                 success: function(response) {
                       row.find('.view-mode').show();
@@ -145,10 +145,10 @@
       newRow.find('.view-mode').show();
       newRow.find('.edit-mode').hide();
       $.ajax({
-                url: '/ChucVu/Create',
+                url: '/BoPhan/Create',
                 type: 'POST',
                 data: {
-                    chucvu: newStatus
+                    bophan: newStatus
                 },
                 success: function(response) {
                       alert("Thêm mới thành công");
