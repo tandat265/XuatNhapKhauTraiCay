@@ -5,7 +5,27 @@
   var lstTrangThai = ViewData["lstTrangThai"] as List<TrangThaiNhanVien>;
   var lstChucVu = ViewData["lstChucVu"] as List<ChucVu>;
   int stt = 0;
+  var successMessage = TempData["SuccessMessage"] as string;
 }
+
+@if (!string.IsNullOrEmpty(successMessage))
+{
+    <div id="success-message" class="alert alert-success" role="alert">
+        @successMessage
+    </div>
+}
+@* <style>
+    .breadcrumb {
+        background-color: #007bff; /* Màu xanh */
+    }
+    .breadcrumb .breadcrumb-item a {
+        color: white; /* Màu chữ trắng cho nút */
+    }
+    .breadcrumb .breadcrumb-item a:hover {
+        color: #ffcc00; /* Màu chữ khi hover */
+    }
+</style> *@
+
 @* ************** Content ************** *@
 <h4 class="py-3 mb-4">
   <span class="text-muted fw-light">Nhân viên</span>
@@ -14,6 +34,13 @@
 <!-- Basic Bootstrap Table -->
 <div class="card">
   <h5 class="card-header">Danh sách nhân viên</h5>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a class="btn btn-gradient-success btn-md" asp-action="Create">Thêm mới</a>
+        </li>
+    </ol>
+  </nav>
   <div class="table-responsive text-nowrap">
     <table class="table">
       <thead>
@@ -69,7 +96,7 @@
                     class="bx bx-dots-vertical-rounded"></i></button>
                 <div class="dropdown-menu">
                   <a class="dropdown-item" asp-action="Edit" asp-route-id="@nhanVien.MaNhanVien"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                  <a class="dropdown-item" href="javascript:void(0);"><i class="bx bx-trash me-1"></i> Delete</a>
+                  <a class="dropdown-item" asp-action="Delete" asp-route-id="@nhanVien.MaNhanVien"><i class="bx bx-trash me-1"></i> Delete</a>
                 </div>
               </div>
             </td>
@@ -98,4 +125,12 @@
     });
   });
 
+  document.addEventListener("DOMContentLoaded", function() {
+      var successMessage = document.getElementById("success-message");
+      if (successMessage) {
+          setTimeout(function() {
+              successMessage.style.display = "none";
+          }, 5000); // 5000 milliseconds = 5 seconds
+      }
+  });
 </script>

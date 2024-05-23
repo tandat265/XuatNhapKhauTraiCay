@@ -1,0 +1,80 @@
+@model NhanVien
+@{
+  ViewData["Title"] = "Xoá";
+  var nhanVien = ViewData["nhanVien"] as NhanVien;
+  var boPhan = ViewData["boPhan"] as BoPhan;
+  var trangThai = ViewData["trangThai"] as TrangThaiNhanVien;
+  var chucVu = ViewData["chucVu"] as ChucVu;
+}
+
+@* ************** Content ************** *@
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <div class="card-body">
+        <form asp-action="Delete" asp-route-id="@Model.MaNhanVien">
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-fullname">Họ và tên</label>
+            <div class="input-group input-group-merge">
+              <input type="text" class="form-control" id="basic-icon-default-fullname" asp-for="TenNhanVien" value="@Model.TenNhanVien"
+                aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" readonly/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Chức vụ</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-company" class="form-control" value="@(chucVu?.ChucVu1 ?? "")"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="IdChucVu" readonly />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Bộ phận</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-boPhan" class="form-control" value="@(boPhan != null ? boPhan.TenBoPhan : "")"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="IdboPhan" readonly />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Trạng thái</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-status" class="form-control" value="@(trangThai != null ? trangThai.TrangThai : "")"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="IdtrangThai" readonly />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-email">Email</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-email" class="form-control" value="@nhanVien.Email"
+                aria-label="john.doe" aria-describedby="basic-icon-default-email2" asp-for="Email" readonly/>
+            </div>
+            <div class="form-text"> You can use letters, numbers & periods </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-phone">Số điện thoại</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-phone" class="form-control phone-mask"
+                value="@nhanVien.Phone" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" asp-for="Phone" readonly/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-message">CCCD/CMND</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-cccd" class="form-control phone-mask"
+                value="@nhanVien.Cccd" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" asp-for="Cccd" readonly/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-message">Địa chỉ</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-address" class="form-control phone-mask"
+                value="@nhanVien.Address" aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" asp-for="Address" readonly/>
+            </div>
+          </div>
+          <button id="deleteBtn" type="submit" class="btn btn-primary">Xoá</button>
+          <button id="saveBtn" type="submit" asp-action="Index" class="btn btn-primary">Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
