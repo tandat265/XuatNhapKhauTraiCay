@@ -1,0 +1,170 @@
+@{
+  ViewData["Title"] = "Trạng thái phương tiện";
+  var lstTrangThaiPhuongTien = ViewData["lstTrangThaiPhuongTien"] as List<TrangThaiPhuongTien>;
+  var stt = 0;
+}
+
+@* @if (!string.IsNullOrEmpty(successMessage))
+{
+  <div id="success-message" class="alert alert-success" role="alert">
+      @successMessage
+  </div>
+} *@
+<div class="card">
+  <h5 class="card-header">Danh sách trạng thái phương tiện</h5>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">
+        <button class="btn btn-gradient-success btn-md" id="addRowBtn">Thêm mới</button>
+      </li>
+    </ol>
+  </nav>
+  <div class="table-responsive text-nowrap">
+    <table class="table table-striped table-hover" id="employeeTable">
+      <thead >
+        <tr>
+          <th>STT</th>
+          <th>Trạng thái phương tiện</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        @foreach (var trangThaiPhuongTien in lstTrangThaiPhuongTien)
+        {
+          <tr data-id="@trangThaiPhuongTien.IdtrangThai">
+            <td>@(++stt)</td>
+            <td>
+              <span class="view-mode">@trangThaiPhuongTien.TrangThai</span>
+              <input class="edit-mode form-control" type="text" value="@trangThaiPhuongTien.TrangThai" style="display:none;">
+            </td>
+            <td>
+              <div class="dropdown view-mode">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                  <i class="bx bx-dots-vertical-rounded"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item edit-button" href="#"><i class="bx bx-edit-alt me-1"></i> Chỉnh sửa</a>
+                  <a class="dropdown-item delete-button" data-id="@trangThaiPhuongTien.IdtrangThai"><i class="bx bx-trash me-1"></i> Xoá</a>
+                </div>
+              </div>
+              <div class="edit-mode" style="display:none;">
+                <button class="btn btn-primary save-button">Lưu</button>
+                <button class="btn btn-secondary cancel-button">Hủy</button>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+
+
+
+@section PageStyles{
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    $(document).ready(function() {
+        $('.edit-button').on('click', function(e) {
+            e.preventDefault();
+            var row = $(this).closest('tr');
+            row.find('.view-mode').hide();
+            row.find('.edit-mode').show();
+        });
+
+        $('.delete-button').on('click', function(e) {
+          var id = $(this).data('id');
+          $.ajax({
+              url: '/TrangThaiPhuongTien/Delete',
+              type: 'POST',
+              data: {
+                  id: id
+              },
+              success: function(response) {
+                    alert("Xoá thành công");
+                    window.location.reload();
+              },
+              error: function(xhr, status, error) {
+                  alert("Xoá không thành công");
+              }
+          });
+        });
+        $('.cancel-button').on('click', function() {
+            var row = $(this).closest('tr');
+            row.find('.edit-mode').hide();
+            row.find('.view-mode').show();
+        });
+
+        $('.save-button').on('click', function() {
+            var row = $(this).closest('tr');
+            var id = row.data('id');
+            var trangthai = row.find('input:eq(0)').val();
+            console.log(id);
+            $.ajax({
+                url: '/TrangThaiPhuongTien/Edit',
+                type: 'POST',
+                data: {
+                    id: id,
+                    trangthaiphuongtien: trangthai
+                },
+                success: function(response) {
+                      row.find('.view-mode').show();
+                      row.find('.edit-mode').hide();
+                      alert("Chỉnh sửa thành công");
+                      window.location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("Chỉnh sửa không thành công");
+                }
+            });
+        });
+    });
+
+    $(document).ready(function() {
+    $('#addRowBtn').on('click', function() {
+      var newRow = '<tr>' +
+        '<td></td>' +
+        '<td><input type="text" class="form-control new-status-input"></td>' +
+        '<td>' +
+        '<button class="btn btn-primary save-new-row">Lưu</button>' +
+        '<button class="btn btn-secondary cancel-new-row">Hủy</button>' +
+        '</td>' +
+        '</tr>';
+
+      $('#employeeTable tbody').append(newRow);
+    });
+
+    $('#employeeTable').on('click', '.save-new-row', function() {
+      var newRow = $(this).closest('tr');
+      var newStatus = newRow.find('.new-status-input').val();
+
+      // Thực hiện lưu dữ liệu mới vào cơ sở dữ liệu hoặc xử lý theo yêu cầu của bạn
+
+      newRow.find('.view-mode').text(newStatus);
+      newRow.find('.edit-mode input').val(newStatus);
+      newRow.find('.view-mode').show();
+      newRow.find('.edit-mode').hide();
+      $.ajax({
+                url: '/TrangThaiPhuongTien/Create',
+                type: 'POST',
+                data: {
+                    trangthaiphuongtien: newStatus
+                },
+                success: function(response) {
+                      alert("Thêm mới thành công");
+                      window.location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("Thêm mới không thành công");
+                }
+            });
+    });
+
+    $('#employeeTable').on('click', '.cancel-new-row', function() {
+      $(this).closest('tr').remove();
+    });
+  });
+
+
+</script>
+}
