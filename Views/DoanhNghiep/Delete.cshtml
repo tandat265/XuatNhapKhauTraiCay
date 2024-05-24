@@ -1,0 +1,50 @@
+@model DoanhNghiep
+@{
+  ViewData["Title"] = "Xoá";
+  var doanhNghiep = ViewData["doanhNghiep"] as DoanhNghiep;
+  var quocGia = ViewData["quocGia"] as QuocGium;
+}
+
+@* ************** Content ************** *@
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <h5 class="card-header">Xoá doanh nghiệp</h5>
+      <div class="card-body">
+        <form asp-action="Delete" asp-route-id="@Model.MaDoanhNghiep">
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-fullname">Tên doanh nghiệp</label>
+            <div class="input-group input-group-merge">
+              <input type="text" class="form-control" id="basic-icon-default-fullname" asp-for="TenDoanhNghiep" value="@Model.TenDoanhNghiep"
+                aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" readonly/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Địa chỉ</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-company" class="form-control" value="@Model.DiaChi"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="DiaChi" readonly />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Số điện thoại</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-boPhan" class="form-control" value="@Model.Sdt"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="Sdt" readonly />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Quốc gia</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-status" class="form-control" value="@quocGia.TenQuocGia"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="MaQuocGia" readonly />
+            </div>
+          </div>
+          <button id="deleteBtn" type="submit" class="btn btn-primary">Xoá</button>
+          <button id="saveBtn" type="submit" asp-action="Index" class="btn btn-primary">Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
