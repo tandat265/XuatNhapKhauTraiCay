@@ -69,7 +69,7 @@
               @doanhNghiep.Sdt
             </td>
             <td>
-              @quocGia.TenQuocGia
+              @(quocGia != null ? quocGia.TenQuocGia : "")
             </td>
             <td>
               <div class="dropdown">

@@ -25,7 +25,7 @@ public class DoanhNghiepController : Controller
   {
     var doanhNghiep = await dbContext.DoanhNghieps.Where(item => item.MaDoanhNghiep == id).FirstOrDefaultAsync();
     ViewData["doanhNghiep"] = doanhNghiep;
-    ViewData["quocGia"] = await dbContext.QuocGia.Where(item => item.MaQuocGia == doanhNghiep.MaDoanhNghiep).FirstOrDefaultAsync();
+    ViewData["quocGia"] = await dbContext.QuocGia.Where(item => item.MaQuocGia == doanhNghiep.MaQuocGia).FirstOrDefaultAsync();
     return View();
   }
 

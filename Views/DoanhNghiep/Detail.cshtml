@@ -36,7 +36,7 @@
           <div class="mb-3">
             <label class="form-label" for="basic-icon-default-company">Quốc gia</label>
             <div class="input-group input-group-merge">
-              <input type="text" id="basic-icon-default-status" class="form-control" value="@quocGia.TenQuocGia"
+              <input type="text" id="basic-icon-default-status" class="form-control" value="@(quocGia != null ? quocGia.TenQuocGia : "")"
                 aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
             </div>
           </div>
