@@ -1,8 +1,8 @@
-@model DoanhNghiep
+@model NhaCungCap
 @{
   ViewData["Title"] = "Xoá";
-  var doanhNghiep = ViewData["doanhNghiep"] as DoanhNghiep;
-  var quocGia = ViewData["quocGia"] as QuocGium;
+  var nhaCungCap = ViewData["nhaCungCap"] as NhaCungCap;
+  var traiCay = ViewData["traiCay"] as TraiCay;
 }
 
 @* ************** Content ************** *@
@@ -10,13 +10,13 @@
 <div class="row">
   <div class="col-xl">
     <div class="card mb-4">
-      <h5 class="card-header">Xoá doanh nghiệp</h5>
+      <h5 class="card-header">Xoá nhà cung cấp</h5>
       <div class="card-body">
-        <form asp-action="Delete" asp-route-id="@Model.MaDoanhNghiep">
+        <form asp-action="Delete" asp-route-id="@Model.MaNhaCungCap">
           <div class="mb-3">
-            <label class="form-label" for="basic-icon-default-fullname">Tên doanh nghiệp</label>
+            <label class="form-label" for="basic-icon-default-fullname">Tên nhà cung cấp</label>
             <div class="input-group input-group-merge">
-              <input type="text" class="form-control" id="basic-icon-default-fullname" asp-for="TenDoanhNghiep" value="@Model.TenDoanhNghiep"
+              <input type="text" class="form-control" id="basic-icon-default-fullname" asp-for="TenNhaCungCap" value="@Model.TenNhaCungCap"
                 aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" readonly/>
             </div>
           </div>
@@ -30,15 +30,15 @@
           <div class="mb-3">
             <label class="form-label" for="basic-icon-default-company">Số điện thoại</label>
             <div class="input-group input-group-merge">
-              <input type="text" id="basic-icon-default-boPhan" class="form-control" value="@Model.Sdt"
-                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="Sdt" readonly />
+              <input type="text" id="basic-icon-default-boPhan" class="form-control" value="@Model.Sđt"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="Sđt" readonly />
             </div>
           </div>
           <div class="mb-3">
-            <label class="form-label" for="basic-icon-default-company">Quốc gia</label>
+            <label class="form-label" for="basic-icon-default-company">Trái cây</label>
             <div class="input-group input-group-merge">
-              <input type="text" id="basic-icon-default-status" class="form-control" value="@(quocGia != null ? quocGia.TenQuocGia : "")"
-                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="MaQuocGia" readonly />
+              <input type="text" id="basic-icon-default-status" class="form-control" value="@(traiCay != null ? traiCay.TenTraiCay : "" )"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="MaTraiCay" readonly />
             </div>
           </div>
           <button id="deleteBtn" type="submit" class="btn btn-primary">Xoá</button>

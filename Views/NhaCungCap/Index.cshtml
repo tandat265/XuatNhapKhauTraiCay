@@ -1,7 +1,7 @@
 @{
-  ViewData["Title"] = "Doanh nghiệp";
-  var lstDoanhNghiep = ViewData["lstDoanhNghiep"] as List<DoanhNghiep>;
-  var lstQuocGia = ViewData["lstQuocGia"] as List<QuocGium>;
+  ViewData["Title"] = "Nhà cung cấp";
+  var lstNhaCungCap = ViewData["lstNhaCungCap"] as List<NhaCungCap>;
+  var lstTraiCay = ViewData["lstTraiCay"] as List<TraiCay>;
   int stt = 0;
   var successMessage = TempData["SuccessMessage"] as string;
 }
@@ -26,12 +26,12 @@
 
 @* ************** Content ************** *@
 <h4 class="py-3 mb-4">
-  <span class="text-muted fw-light">Doanh nghiệp</span>
+  <span class="text-muted fw-light">Nhà cung cấp</span>
 </h4>
 
 <!-- Basic Bootstrap Table -->
 <div class="card">
-  <h5 class="card-header">Danh sách doanh nghiệp</h5>
+  <h5 class="card-header">Danh sách nhà cung cấp</h5>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item">
@@ -44,32 +44,32 @@
       <thead>
         <tr>
           <th>STT</th>
-          <th>Tên doanh nghiệp</th>
+          <th>Tên nhà cung cấp</th>
           <th>Địa chỉ</th>
           <th>Số điện thoại</th>
-          <th>Quốc gia</th>
+          <th>Trái cây</th>
           <th></th>
         </tr>
       </thead>
       <tbody class="table-border-bottom-0">
-        @foreach (var doanhNghiep in lstDoanhNghiep)
+        @foreach (var nhaCungCap in lstNhaCungCap)
         {
-          var quocGia = lstQuocGia.Where(item => item.MaQuocGia == doanhNghiep.MaQuocGia).FirstOrDefault();
+          var traiCay = lstTraiCay.Where(item => item.MaTraiCay == nhaCungCap.MaTraiCay).FirstOrDefault();
           <tr>
             <td>@(++stt)</td>
             <td>
-              <a href="#" class="detail-link" data-id="@doanhNghiep.MaDoanhNghiep">
-                @doanhNghiep.TenDoanhNghiep
+              <a href="#" class="detail-link" data-id="@nhaCungCap.MaNhaCungCap">
+                @nhaCungCap.TenNhaCungCap
               </a>
             </td>
             <td>
-              @doanhNghiep.DiaChi
+              @nhaCungCap.DiaChi
             </td>
             <td>
-              @doanhNghiep.Sdt
+              @nhaCungCap.Sđt
             </td>
             <td>
-              @(quocGia != null ? quocGia.TenQuocGia : "")
+              @(traiCay != null ? traiCay.TenTraiCay : "")
             </td>
             <td>
               <div class="dropdown">
@@ -77,8 +77,8 @@
                     class="bx bx-dots-vertical-rounded"></i></button>
                 <div class="dropdown-menu">
                   <input type="hidden" id="success-message" value="@successMessage"/>
-                  <a class="dropdown-item" asp-action="Edit" asp-route-id="@doanhNghiep.MaDoanhNghiep"><i class="bx bx-edit-alt me-1"></i> Edit</a>
-                  <a class="dropdown-item" asp-action="Delete" asp-route-id="@doanhNghiep.MaDoanhNghiep"><i class="bx bx-trash me-1"></i> Delete</a>
+                  <a class="dropdown-item" asp-action="Edit" asp-route-id="@nhaCungCap.MaNhaCungCap"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                  <a class="dropdown-item" asp-action="Delete" asp-route-id="@nhaCungCap.MaNhaCungCap"><i class="bx bx-trash me-1"></i> Delete</a>
                 </div>
               </div>
             </td>
@@ -102,7 +102,7 @@
             var idDoanhNghiep = this.getAttribute('data-id');
 
             // Chuyển hướng đến trang "View Detail" và gửi thêm tham số idNhanVien
-            window.location.href = '/DoanhNghiep/Detail?id=' + idDoanhNghiep;
+            window.location.href = '/NhaCungCap/Detail?id=' + idDoanhNghiep;
         });
     });
   });

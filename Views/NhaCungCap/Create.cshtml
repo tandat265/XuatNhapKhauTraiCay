@@ -1,0 +1,53 @@
+@model NhaCungCap
+@{
+  ViewData["Title"] = "Thêm mới";
+  @* var lstBoPhan = ViewData["lstBoPhan"] as List<BoPhan>;
+  var lstTrangThai = ViewData["lstTrangThai"] as List<TrangThaiNhanVien>;
+  var lstChucVu = ViewData["lstChucVu"] as List<ChucVu>; *@
+}
+
+
+@* ************** Content ************** *@
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <h5 class="card-header">Tạo mới nhà cung cấp</h5>
+      <div class="card-body">
+        <form asp-action="Create">
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-fullname">Tên nhà cung cấp</label>
+            <div class="input-group input-group-merge">
+              <input type="text" class="form-control" id="fullname"
+                aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" asp-for="TenNhaCungCap"/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-email">Địa chỉ</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="email" class="form-control"
+                aria-label="john.doe" aria-describedby="basic-icon-default-email2" asp-for="DiaChi"/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-phone">Số điện thoại</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="phone" class="form-control"
+              aria-label="658 799 8941" aria-describedby="basic-icon-default-phone2" asp-for="Sđt"/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Trái cây</label>
+            <div class="input-group input-group-merge">
+              <select class="form-select" id="chucVu" asp-for="MaTraiCay" asp-items="@(ViewData["lstTraiCay"] as SelectList)">
+                <option value="">-- Chọn trái cây --</option>
+              </select>
+            </div>
+          </div>
+          <button id="saveBtn" type="submit" class="btn btn-primary">Save</button>
+          <button id="saveBtn" type="submit" asp-action="Index" class="btn btn-primary">Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
