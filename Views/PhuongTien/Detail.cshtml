@@ -1,0 +1,52 @@
+@{
+  ViewData["Title"] = "Chi tiết";
+  var phuongTien = ViewData["phuongTien"] as PhuongTien;
+  var loaiPhuongTien = ViewData["loaiPhuongTien"] as LoaiPhuongTien;
+  var trangThai = ViewData["trangThai"] as TrangThaiPhuongTien;
+}
+
+@* ************** Content ************** *@
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <h5 class="card-header">Chi tiết phương tiện</h5>
+      <div class="card-body">
+        <form>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-fullname">Tên phương tiện</label>
+            <div class="input-group input-group-merge">
+              <input type="text" class="form-control" id="basic-icon-default-fullname" value="@phuongTien.TenPhuongTien"
+                aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" readonly/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Loại phương tiện</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-company" class="form-control" value="@(loaiPhuongTien?.LoaiPhuongTien1 ?? "")"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Trạng thái</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-boPhan" class="form-control" value="@(trangThai?.TrangThai ?? "")"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
+            </div>
+          </div>
+          <button id="editBtn" type="button" class="btn btn-primary" data-id="@phuongTien.MaPhuongTien">Edit</button>
+          <button id="saveBtn" type="submit" asp-action="Index" class="btn btn-primary">Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('editBtn').addEventListener('click', function(event) {
+    var idNhanVien = this.getAttribute('data-id');
+    console.log(idNhanVien);
+    // Chuyển hướng đến trang "Edit" và gửi thêm tham số idNhanVien
+    window.location.href = '/PhuongTien/Edit?id=' + idNhanVien;
+  });
+</script>

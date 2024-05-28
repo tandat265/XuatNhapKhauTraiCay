@@ -1,0 +1,134 @@
+@{
+  ViewData["Title"] = "Phương tiện";
+  var lstPhuongTien = ViewData["lstPhuongTien"] as List<PhuongTien>;
+  var lstLoaiPhuongTien = ViewData["lstLoaiPhuongTien"] as List<LoaiPhuongTien>;
+  var lstTrangThai = ViewData["lstTrangThai"] as List<TrangThaiPhuongTien>;
+  int stt = 0;
+  var successMessage = TempData["SuccessMessage"] as string;
+}
+
+@* @if (!string.IsNullOrEmpty(successMessage))
+{
+    <div id="success-message" class="alert alert-success" role="alert">
+        @successMessage
+    </div>
+} *@
+@* <style>
+    .breadcrumb {
+        background-color: #007bff; /* Màu xanh */
+    }
+    .breadcrumb .breadcrumb-item a {
+        color: white; /* Màu chữ trắng cho nút */
+    }
+    .breadcrumb .breadcrumb-item a:hover {
+        color: #ffcc00; /* Màu chữ khi hover */
+    }
+</style> *@
+
+@* ************** Content ************** *@
+<h4 class="py-3 mb-4">
+  <span class="text-muted fw-light">Phương tiện</span>
+</h4>
+<input type="hidden" id="success-message" value="@successMessage"/>
+
+<!-- Basic Bootstrap Table -->
+<div class="card">
+  <h5 class="card-header">Danh sách phương tiện</h5>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a class="btn btn-gradient-success btn-md" asp-action="Create">Thêm mới</a>
+        </li>
+    </ol>
+  </nav>
+  <div class="table-responsive text-nowrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên phương tiện</th>
+          <th>Loại phương tiện</th>
+          <th>Trạng thái</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        @foreach (var phuongTien in lstPhuongTien)
+        {
+          var trangThai = lstTrangThai.Where(item => item.IdtrangThai == phuongTien.IdtrangThai).FirstOrDefault();
+          var loaiPhuongTien = lstLoaiPhuongTien.Where(item => item.IdloaiPhuongTien == phuongTien.IdloaiPhuongTien).FirstOrDefault();
+          <tr>
+            <td>@(++stt)</td>
+            <td>
+              <a href="#" class="detail-link" data-id="@phuongTien.MaPhuongTien">
+                @phuongTien.TenPhuongTien
+              </a>
+            </td>
+            <td>
+              @(loaiPhuongTien != null ? loaiPhuongTien.LoaiPhuongTien1 : "")
+            </td>
+            <td>
+              @if (trangThai != null)
+              {
+                @if (trangThai.IdtrangThai == 1)
+                {
+                  <span class="badge bg-label-primary me-1">@(trangThai.TrangThai)</span>
+                }
+                else @if (trangThai.IdtrangThai == 2)
+                {
+                  <span class="badge bg-label-success me-1">@(trangThai.TrangThai)</span>
+                }
+                else @if (trangThai.IdtrangThai == 3)
+                {
+                  <span class="badge bg-label-warning me-1">@(trangThai.TrangThai)</span>
+                }
+                else
+                {
+                  <span class="badge bg-label-primary me-1">@(trangThai.TrangThai)</span>
+                }
+
+              }
+            </td>
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
+                    class="bx bx-dots-vertical-rounded"></i></button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" asp-action="Edit" asp-route-id="@phuongTien.MaPhuongTien"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                  <a class="dropdown-item" asp-action="Delete" asp-route-id="@phuongTien.MaPhuongTien"><i class="bx bx-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--/ Basic Bootstrap Table -->
+<hr class="my-5">
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var detailLinks = document.querySelectorAll('.detail-link');
+
+    detailLinks.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ 'a'
+
+            var idNhanVien = this.getAttribute('data-id');
+
+            // Chuyển hướng đến trang "View Detail" và gửi thêm tham số idNhanVien
+            window.location.href = '/PhuongTien/Detail?id=' + idNhanVien;
+        });
+    });
+  });
+
+  document.addEventListener("DOMContentLoaded", function() {
+      var successMessage = document.getElementById("success-message").value;
+      console.log(successMessage);
+      if (successMessage != null && successMessage != "") {
+        alert(successMessage);
+      }
+  });
+</script>
