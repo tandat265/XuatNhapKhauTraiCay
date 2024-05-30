@@ -1,0 +1,95 @@
+@{
+  ViewData["Title"] = "Chỉnh sửa";
+  var traiCay = ViewData["traiCay"] as TraiCay;
+  var giaTraiCay = ViewData["giaTraiCay"] as GiaTraiCay;
+}
+
+
+@* ************** Content ************** *@
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <h5 class="card-header">Chỉnh sửa trái cây</h5>
+      <div class="card-body">
+        <form >
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-fullname">Tên trái cây</label>
+            <div class="input-group input-group-merge">
+              <input type="text" class="form-control" id="tentraicay" data-id="@traiCay.MaTraiCay"
+                aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" value="@traiCay.TenTraiCay"/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Loại trái cây</label>
+            <div class="input-group input-group-merge">
+              <select class="form-select" id="loaitraicay" asp-items="@(ViewData["lstLoaiTraiCay"] as SelectList)">
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+              <label class="form-label" for="basic-icon-default-company">Giá tiền</label>
+              <div class="input-group input-group-merge row align-items-center">
+                  <div class="col-auto">
+                      <input type="number" class="form-control" id="giatien"
+                      aria-label="Giá tiền" aria-describedby="basic-icon-default-fullname2" value="@giaTraiCay?.GiaTien"/>
+                  </div>
+                  <div class="col-auto">
+                      <span >VND/</span>
+                  </div>
+                  <div class="col-auto">
+                      <input type="number" class="form-control" id="soluong"
+                      aria-label="Số lượng" aria-describedby="basic-icon-default-fullname2" value="@giaTraiCay?.SoLuong"/>
+                  </div>
+                  <div class="col-auto">
+                      <select class="form-select" id="donvitinh" asp-items="@(ViewData["lstDonViTinh"] as SelectList)">
+                      </select>
+                  </div>
+              </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-fullname">Mô tả</label>
+            <div class="input-group input-group-merge">
+              <input type="text" class="form-control" id="mota"
+                aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" value="@traiCay.MoTa"/>
+            </div>
+          </div>
+          <button id="saveBtn" type="button" class="btn btn-primary">Save</button>
+          <button id="backBtn" type="submit" asp-action="Index" class="btn btn-primary">Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById("saveBtn").addEventListener("click", function(event) {
+      var idtraicay = $('#tentraicay').data('id');
+      var tentraicay = $('#tentraicay').val();
+      var loaitraicay = $('#loaitraicay').val();
+      var giatien = $('#giatien').val();
+      var soluong = $('#soluong').val();
+      var donvitinh = $('#donvitinh').val();
+      var mota = $('#mota').val();
+      $.ajax({
+        url: "/TraiCay/SaveEdit",
+        method: "POST",
+        data: {
+          idtraicay: idtraicay,
+          tentraicay: tentraicay,
+          loaitraicay: loaitraicay,
+          giatien: giatien,
+          soluong: soluong,
+          donvitinh: donvitinh,
+          mota: mota,
+        },
+        success: function(response) {
+              alert("Chỉnh sửa thành công");
+              window.location.href = "/TraiCay/Detail/"+idtraicay;
+        },
+        error: function(xhr, status, error) {
+            alert("Thêm mới không thành công");
+        }
+      });
+    });
+</script>

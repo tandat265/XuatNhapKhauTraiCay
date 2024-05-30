@@ -1,0 +1,140 @@
+@{
+  ViewData["Title"] = "Trái cây";
+  var lstTraiCay = ViewData["lstTraiCay"] as List<TraiCay>;
+  var lstLoaiTraiCay = ViewData["dicLoaiTraiCay"] as List<LoaiTraiCay>;
+  var lstGiaTraiCay = ViewData["dicGiaTraiCay"] as List<GiaTraiCay>;
+  var lstDonViTinh = ViewData["dicDonViTinh"] as List<DonViTinh>;
+  int stt = 0;
+  var successMessage = TempData["SuccessMessage"] as string;
+}
+
+@* @if (!string.IsNullOrEmpty(successMessage))
+{
+    <div id="success-message" class="alert alert-success" role="alert">
+        @successMessage
+    </div>
+} *@
+<style>
+  .short-description {
+      max-width: 200px; /* Adjust this width as needed */
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      display: inline-block;
+      vertical-align: middle;
+  }
+</style>
+
+@* ************** Content ************** *@
+<h4 class="py-3 mb-4">
+  <span class="text-muted fw-light">Trái cây</span>
+</h4>
+<input type="hidden" id="success-message" value="@successMessage"/>
+
+<!-- Basic Bootstrap Table -->
+<div class="card">
+  <h5 class="card-header">Danh sách trái cây</h5>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item">
+            <a class="btn btn-gradient-success btn-md" asp-action="Create">Thêm mới</a>
+        </li>
+    </ol>
+  </nav>
+  <div class="table-responsive text-nowrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Tên trái cây</th>
+          <th>Loại trái cây</th>
+          <th>Giá tiền</th>
+          <th>Mô tả</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody class="table-border-bottom-0">
+        @foreach (var traiCay in lstTraiCay)
+        {
+          var giaTraiCay = lstGiaTraiCay.Where(item => item.MaTraiCay == traiCay.MaTraiCay).FirstOrDefault();
+          var loaiTraiCay = lstLoaiTraiCay.Where(item => item.IdloaiTraiCay == traiCay.IdloaiTraiCay).FirstOrDefault();
+          var donViTinh = giaTraiCay != null ? lstDonViTinh.Where(item => item.IdDonViTinh == giaTraiCay.IdDonViTinh).FirstOrDefault() : null;
+          <tr>
+            <td>@(++stt)</td>
+            <td>
+              <a href="#" class="detail-link" data-id="@traiCay.MaTraiCay">
+                @traiCay.TenTraiCay
+              </a>
+            </td>
+            <td>
+              @(loaiTraiCay?.LoaiTraiCay1 ?? "")
+            </td>
+            <td>
+              @(giaTraiCay != null ? (giaTraiCay.GiaTien + " VND/ " + @giaTraiCay.SoLuong.ToString() + " " + @donViTinh?.DonViTinh1 ?? "") : "")
+            </td>
+            @* <input class="mota" type="hidden" value="@traiCay.MoTa"/> *@
+            <td>
+              @traiCay.MoTa
+            </td>
+            @* <td class="short-description" title="@traiCay.MoTa">
+                <!-- JavaScript will update this content -->
+            </td> *@
+            <td>
+              <div class="dropdown">
+                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown"><i
+                    class="bx bx-dots-vertical-rounded"></i></button>
+                <div class="dropdown-menu">
+                  <a class="dropdown-item" asp-action="Edit" asp-route-id="@traiCay.MaTraiCay"><i class="bx bx-edit-alt me-1"></i> Edit</a>
+                  <a class="dropdown-item" asp-action="Delete" asp-route-id="@traiCay.MaTraiCay"><i class="bx bx-trash me-1"></i> Delete</a>
+                </div>
+              </div>
+            </td>
+
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
+<!--/ Basic Bootstrap Table -->
+<hr class="my-5">
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    var detailLinks = document.querySelectorAll('.detail-link');
+
+    detailLinks.forEach(function(link) {
+        link.addEventListener('click', function(event) {
+            event.preventDefault(); // Ngăn chặn hành động mặc định của thẻ 'a'
+
+            var idNhanVien = this.getAttribute('data-id');
+
+            // Chuyển hướng đến trang "View Detail" và gửi thêm tham số idNhanVien
+            window.location.href = '/TraiCay/Detail?id=' + idNhanVien;
+        });
+    });
+  });
+
+  @* document.addEventListener("DOMContentLoaded", function() {
+      var successMessage = document.getElementById("success-message").value;
+      console.log(successMessage);
+      if (successMessage != null && successMessage != "") {
+        alert(successMessage);
+      }
+  }); *@
+
+  document.addEventListener('DOMContentLoaded', (event) => {
+            const descriptionElement = document.querySelector('.short-description');
+            var fullDescription = $(this).closest('td').find('.mota').val();
+            const maxLength = 30;
+
+            if (fullDescription.length > maxLength) {
+                descriptionElement.textContent = fullDescription.substring(0, maxLength) + '...';
+            } else {
+                descriptionElement.textContent = fullDescription;
+            }
+
+            descriptionElement.setAttribute('title', fullDescription);
+        });
+
+</script>

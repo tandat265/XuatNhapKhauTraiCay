@@ -1,0 +1,92 @@
+@{
+  ViewData["Title"] = "Chi tiết";
+  var traiCay = ViewData["traiCay"] as TraiCay;
+  var loaiTraiCay = ViewData["loaiTraiCay"] as LoaiTraiCay;
+  var lstGiaTraiCay = ViewData["lstGiaTraiCay"] as List<GiaTraiCay>;
+  var lstDonViTinh = ViewData["lstDonViTinh"] as Dictionary<int ,string>;
+  var stt = 0;
+}
+
+@* ************** Content ************** *@
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <h5 class="card-header">Chi tiết trái cây</h5>
+      <div class="card-body">
+        <form>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-fullname">Tên trái cây</label>
+            <div class="input-group input-group-merge">
+              <input type="text" class="form-control" id="basic-icon-default-fullname" value="@traiCay.TenTraiCay"
+                aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" readonly/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Loại trái cây</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-company" class="form-control" value="@(loaiTraiCay?.LoaiTraiCay1 ?? "")"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Giá tiền</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-boPhan" class="form-control" value="@(lstGiaTraiCay.Count > 0 ? (lstGiaTraiCay[0].GiaTien + " VND/ " + lstGiaTraiCay[0].SoLuong.ToString() + " " + (lstGiaTraiCay[0].IdDonViTinh != null ? lstDonViTinh[lstGiaTraiCay[0].IdDonViTinh.Value] : "")) : "")"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Mô tả</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-company" class="form-control" value="@(traiCay.MoTa)"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
+            </div>
+          </div>
+
+          <div class="card">
+            <h5 class="card-header">Nhật ký cập nhật giá tiền</h5>
+            <div class="table-responsive text-nowrap">
+              <table class="table table-hover" id="employeeTable">
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>Giá tiền</th>
+                    <th>Ngày cập nhật</th>
+                  </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                  @foreach (var giaTraiCay in lstGiaTraiCay)
+                  {
+                    <tr >
+                      <td>@(++stt)</td>
+                      <td>
+                        @(giaTraiCay.GiaTien + " VND/ " + giaTraiCay.SoLuong.ToString() + " " + (giaTraiCay.IdDonViTinh != null ? lstDonViTinh[giaTraiCay.IdDonViTinh.Value] : ""))
+                      </td>
+                      <td>
+                        @(giaTraiCay.NgayCapNhat)
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 20px;"></div>
+          <button id="editBtn" type="button" class="btn btn-primary" data-id="@traiCay.MaTraiCay">Edit</button>
+          <button id="saveBtn" type="submit" asp-action="Index" class="btn btn-primary">Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('editBtn').addEventListener('click', function(event) {
+    var idNhanVien = this.getAttribute('data-id');
+    console.log(idNhanVien);
+    // Chuyển hướng đến trang "Edit" và gửi thêm tham số idNhanVien
+    window.location.href = '/TraiCay/Edit?id=' + idNhanVien;
+  });
+</script>

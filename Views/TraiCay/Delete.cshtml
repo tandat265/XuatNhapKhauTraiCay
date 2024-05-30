@@ -1,0 +1,53 @@
+@model TraiCay
+
+@{
+  ViewData["Title"] = "Xoá";
+  var traiCay = ViewData["traiCay"] as TraiCay;
+  var loaiTraiCay = ViewData["loaiTraiCay"] as LoaiTraiCay;
+  var giaTraiCay = ViewData["giaTraiCay"] as GiaTraiCay;
+  var lstDonViTinh = ViewData["lstDonViTinh"] as Dictionary<int ,string>;
+}
+
+@* ************** Content ************** *@
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <h5 class="card-header">Xoá trái cây</h5>
+      <div class="card-body">
+        <form asp-action="Delete" asp-router-id="@Model.MaTraiCay">
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-fullname">Tên trái cây</label>
+            <div class="input-group input-group-merge">
+              <input type="text" class="form-control" id="basic-icon-default-fullname" asp-for="TenTraiCay"
+                aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" readonly/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Loại trái cây</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-company" class="form-control" value="@(loaiTraiCay?.LoaiTraiCay1 ?? "")"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly asp-for="IdloaiTraiCay"/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Giá tiền</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-boPhan" class="form-control" value="@(giaTraiCay != null ? (giaTraiCay.GiaTien + " VND/ " + giaTraiCay.SoLuong.ToString() + " " + (giaTraiCay.IdDonViTinh != null ? lstDonViTinh[giaTraiCay.IdDonViTinh.Value] : "")) : "")"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Mô tả</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-company" class="form-control" asp-for="MoTa"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
+            </div>
+          </div>
+          <button id="editBtn" type="submit" class="btn btn-primary" data-id="@traiCay.MaTraiCay">Delete</button>
+          <button id="saveBtn" type="submit" asp-action="Index" class="btn btn-primary">Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
