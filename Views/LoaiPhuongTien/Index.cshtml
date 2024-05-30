@@ -61,8 +61,6 @@
 
 
 
-@section PageStyles{
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
   <script>
     $(document).ready(function() {
         $('.edit-button').on('click', function(e) {
@@ -140,10 +138,10 @@
 
       // Thực hiện lưu dữ liệu mới vào cơ sở dữ liệu hoặc xử lý theo yêu cầu của bạn
 
-      newRow.find('.view-mode').text(newStatus);
+      @* newRow.find('.view-mode').text(newStatus);
       newRow.find('.edit-mode input').val(newStatus);
       newRow.find('.view-mode').show();
-      newRow.find('.edit-mode').hide();
+      newRow.find('.edit-mode').hide(); *@
       $.ajax({
                 url: '/LoaiPhuongTien/Create',
                 type: 'POST',

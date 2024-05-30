@@ -18,6 +18,12 @@ public partial class ChiTietKho
 
     public int? SoLuong { get; set; }
 
+    public int? IdDonViTinh { get; set; }
+
+    [ForeignKey("IdDonViTinh")]
+    [InverseProperty("ChiTietKhos")]
+    public virtual DonViTinh? IdDonViTinhNavigation { get; set; }
+
     [ForeignKey("MaKho")]
     [InverseProperty("ChiTietKhos")]
     public virtual Kho? MaKhoNavigation { get; set; }

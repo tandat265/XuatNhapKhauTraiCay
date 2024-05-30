@@ -1,0 +1,70 @@
+@model Kho
+@{
+  ViewData["Title"] = "Chi tiết";
+  var lstChiTietKho = ViewData["lstChiTietKho"] as List<ViewChiTietKho>;
+  var stt = 0;
+}
+
+
+@* ************** Content ************** *@
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <h5 class="card-header">Xoá @Model.TenKho</h5>
+      <div class="card-body">
+        <form asp-action="Delete" asp-route-id="@Model.MaKho">
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-fullname">Tên kho</label>
+            <div class="input-group input-group-merge">
+              <input type="text" class="form-control" id="basic-icon-default-fullname"
+                aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" asp-for="TenKho" readonly/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Địa chỉ</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-company" class="form-control"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="DiaChi" readonly/>
+            </div>
+          </div>
+          <div class="card">
+            <h5 class="card-header">Danh sách trái cây đang chứa</h5>
+            <div class="table-responsive text-nowrap">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th>STT</th>
+                    <th>Tên trái cây</th>
+                    <th>Số lượng</th>
+                    <th>Đơn vị tính</th>
+                  </tr>
+                </thead>
+                <tbody class="table-border-bottom-0">
+                  @foreach (var chiTietKho in lstChiTietKho)
+                  {
+                    <tr data-id="@chiTietKho.MaChiTietKho">
+                      <td>@(++stt)</td>
+                      <td>
+                        @chiTietKho.TenTraiCay
+                      </td>
+                      <td>
+                        @chiTietKho.SoLuong
+                      </td>
+                      <td>
+                        @chiTietKho.DonViTinh
+                      </td>
+                    </tr>
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div style="margin-bottom: 20px;"></div>
+          <button id="saveBtn" type="submit" class="btn btn-primary" >Xoá</button>
+          <button id="backBtn" type="submit" asp-action="Index" class="btn btn-primary">Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

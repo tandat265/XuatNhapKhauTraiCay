@@ -23,8 +23,14 @@ public partial class LoHang
 
     public int? MaKho { get; set; }
 
+    public int? IdDonViTinh { get; set; }
+
     [InverseProperty("MaLoHangNavigation")]
     public virtual ICollection<ChiTietHopDong> ChiTietHopDongs { get; set; } = new List<ChiTietHopDong>();
+
+    [ForeignKey("IdDonViTinh")]
+    [InverseProperty("LoHangs")]
+    public virtual DonViTinh? IdDonViTinhNavigation { get; set; }
 
     [ForeignKey("IdloaiLoHang")]
     [InverseProperty("LoHangs")]

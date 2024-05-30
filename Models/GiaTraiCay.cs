@@ -21,6 +21,12 @@ public partial class GiaTraiCay
     [Column(TypeName = "datetime")]
     public DateTime? NgayCapNhat { get; set; }
 
+    public int? IdDonViTinh { get; set; }
+
+    [ForeignKey("IdDonViTinh")]
+    [InverseProperty("GiaTraiCays")]
+    public virtual DonViTinh? IdDonViTinhNavigation { get; set; }
+
     [ForeignKey("MaTraiCay")]
     [InverseProperty("GiaTraiCays")]
     public virtual TraiCay? MaTraiCayNavigation { get; set; }

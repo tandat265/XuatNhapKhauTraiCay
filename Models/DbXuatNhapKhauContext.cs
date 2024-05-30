@@ -27,6 +27,8 @@ public partial class DbXuatNhapKhauContext : DbContext
 
     public virtual DbSet<DoanhNghiepPhuongTien> DoanhNghiepPhuongTiens { get; set; }
 
+    public virtual DbSet<DonViTinh> DonViTinhs { get; set; }
+
     public virtual DbSet<GiaTraiCay> GiaTraiCays { get; set; }
 
     public virtual DbSet<HopDong> HopDongs { get; set; }
@@ -63,6 +65,8 @@ public partial class DbXuatNhapKhauContext : DbContext
 
     public virtual DbSet<TrangThaiVanChuyen> TrangThaiVanChuyens { get; set; }
 
+    public virtual DbSet<ViewChiTietKho> ViewChiTietKhos { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
         => optionsBuilder.UseSqlServer("Server=DESKTOP-1A0DHPA;Database=dbXuatNhapKhau;Persist Security Info=False;user id=test1;password=@Abc123; Encrypt=False");
@@ -91,6 +95,8 @@ public partial class DbXuatNhapKhauContext : DbContext
         {
             entity.HasKey(e => e.MaChiTietKho).HasName("PK__ChiTietK__CE8258691EEA90BB");
 
+            entity.HasOne(d => d.IdDonViTinhNavigation).WithMany(p => p.ChiTietKhos).HasConstraintName("FK_ChiTietKho_DonViTinh");
+
             entity.HasOne(d => d.MaKhoNavigation).WithMany(p => p.ChiTietKhos).HasConstraintName("FK_ChiTietKho_Kho");
 
             entity.HasOne(d => d.MaTraiCayNavigation).WithMany(p => p.ChiTietKhos).HasConstraintName("FK_ChiTietKho_TraiCay");
@@ -117,9 +123,16 @@ public partial class DbXuatNhapKhauContext : DbContext
             entity.HasOne(d => d.MaPhuongTienNavigation).WithMany(p => p.DoanhNghiepPhuongTiens).HasConstraintName("FK_DoanhNghiep_PhuongTien_PhuongTien");
         });
 
+        modelBuilder.Entity<DonViTinh>(entity =>
+        {
+            entity.Property(e => e.DonViTinh1).IsFixedLength();
+        });
+
         modelBuilder.Entity<GiaTraiCay>(entity =>
         {
             entity.HasKey(e => e.MaGia).HasName("PK__tbGiaTra__3CD3DE5E63B5CA82");
+
+            entity.HasOne(d => d.IdDonViTinhNavigation).WithMany(p => p.GiaTraiCays).HasConstraintName("FK_GiaTraiCay_DonViTinh");
 
             entity.HasOne(d => d.MaTraiCayNavigation).WithMany(p => p.GiaTraiCays).HasConstraintName("FK_GiaTraiCay_TraiCay");
         });
@@ -156,6 +169,8 @@ public partial class DbXuatNhapKhauContext : DbContext
         modelBuilder.Entity<LoHang>(entity =>
         {
             entity.HasKey(e => e.MaLoHang).HasName("PK__tbLoHang__E81C10B22CE99985");
+
+            entity.HasOne(d => d.IdDonViTinhNavigation).WithMany(p => p.LoHangs).HasConstraintName("FK_LoHang_DonViTinh");
 
             entity.HasOne(d => d.IdloaiLoHangNavigation).WithMany(p => p.LoHangs).HasConstraintName("FK_LoHang_LoaiLoHang");
 
@@ -239,6 +254,13 @@ public partial class DbXuatNhapKhauContext : DbContext
         modelBuilder.Entity<TrangThaiVanChuyen>(entity =>
         {
             entity.Property(e => e.TrangThai).IsFixedLength();
+        });
+
+        modelBuilder.Entity<ViewChiTietKho>(entity =>
+        {
+            entity.ToView("View_ChiTietKho");
+
+            entity.Property(e => e.DonViTinh).IsFixedLength();
         });
 
         OnModelCreatingPartial(modelBuilder);
