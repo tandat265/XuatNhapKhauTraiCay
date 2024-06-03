@@ -16,6 +16,8 @@ public partial class DonViTinh
     [StringLength(20)]
     public string? DonViTinh1 { get; set; }
 
+    public double? TiLe { get; set; }
+
     [InverseProperty("IdDonViTinhNavigation")]
     public virtual ICollection<ChiTietKho> ChiTietKhos { get; set; } = new List<ChiTietKho>();
 

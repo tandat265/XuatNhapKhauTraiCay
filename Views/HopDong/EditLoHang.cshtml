@@ -1,0 +1,78 @@
+@model LoHang
+
+@{
+  ViewData["Title"] = "Chỉnh sửa lô hàng";
+  var stt = 0;
+}
+
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <h5 class="card-header">Chỉnh sửa lô hàng</h5>
+      <div class="card-body">
+        <form asp-action="EditLoHang" asp-route-id="@Model.MaLoHang">
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-fullname">Trái cây</label>
+            <div class="input-group input-group-merge">
+              <select class="form-select matraicay" asp-items="@(ViewData["lstTraiCay"] as SelectList)" asp-for="@Model.MaTraiCay">
+                <option value="">-- Chọn trái cây --</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Số lượng</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-status" class="form-control"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="@Model.SoLuong"/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Đơn vị tính</label>
+            <div class="input-group input-group-merge">
+              <select class="form-select matraicay" asp-items="@(ViewData["lstDonViTinh"] as SelectList)" asp-for="@Model.IdDonViTinh">
+                <option value="">-- Chọn đơn vị tính --</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Giá tiền</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-status" class="form-control"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" asp-for="@Model.DonGia"/>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Kho chứa</label>
+            <div class="input-group input-group-merge">
+              <select class="form-select matraicay" asp-items="@(ViewData["lstKho"] as SelectList)" asp-for="@Model.MaKho">
+                <option value="">-- Chọn kho --</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-email">Phương tiện</label>
+            <div class="input-group input-group-merge">
+              <select class="form-select" asp-items="@(ViewData["lstPhuongTien"] as SelectList)" asp-for="@Model.MaPhuongTien">
+                <option value="">-- Chọn phương tiện --</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-email">Trạng thái</label>
+            <div class="input-group input-group-merge">
+              <select class="form-select" asp-items="@(ViewData["lstTrangThai"] as SelectList)" asp-for="@Model.IdtrangThai">
+                <option value="">-- Chọn trạng thái --</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="editBtn" type="submit" class="btn btn-primary" data-id="@Model.MaLoHang">Save</button>
+          <button id="saveBtn" type="submit" asp-action="Index" class="btn btn-primary">Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

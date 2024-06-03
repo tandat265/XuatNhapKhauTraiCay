@@ -17,8 +17,8 @@ public partial class TrangThaiHopDong
     public string? TrangThai { get; set; }
 
     [InverseProperty("IdtrangThaiNavigation")]
-    public virtual ICollection<ChiTietHopDong> ChiTietHopDongs { get; set; } = new List<ChiTietHopDong>();
+    public virtual ICollection<HopDong> HopDongs { get; set; } = new List<HopDong>();
 
     [InverseProperty("IdtrangThaiNavigation")]
-    public virtual ICollection<HopDong> HopDongs { get; set; } = new List<HopDong>();
+    public virtual ICollection<LoHang> LoHangs { get; set; } = new List<LoHang>();
 }

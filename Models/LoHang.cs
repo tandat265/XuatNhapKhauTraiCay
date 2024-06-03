@@ -25,20 +25,32 @@ public partial class LoHang
 
     public int? IdDonViTinh { get; set; }
 
-    [InverseProperty("MaLoHangNavigation")]
-    public virtual ICollection<ChiTietHopDong> ChiTietHopDongs { get; set; } = new List<ChiTietHopDong>();
+    public int? MaHopDong { get; set; }
+
+    public int? MaPhuongTien { get; set; }
+
+    [Column("IDTrangThai")]
+    public int? IdtrangThai { get; set; }
 
     [ForeignKey("IdDonViTinh")]
     [InverseProperty("LoHangs")]
     public virtual DonViTinh? IdDonViTinhNavigation { get; set; }
 
-    [ForeignKey("IdloaiLoHang")]
+    [ForeignKey("IdtrangThai")]
     [InverseProperty("LoHangs")]
-    public virtual LoaiLoHang? IdloaiLoHangNavigation { get; set; }
+    public virtual TrangThaiHopDong? IdtrangThaiNavigation { get; set; }
+
+    [ForeignKey("MaHopDong")]
+    [InverseProperty("LoHangs")]
+    public virtual HopDong? MaHopDongNavigation { get; set; }
 
     [ForeignKey("MaKho")]
     [InverseProperty("LoHangs")]
     public virtual Kho? MaKhoNavigation { get; set; }
+
+    [ForeignKey("MaPhuongTien")]
+    [InverseProperty("LoHangs")]
+    public virtual PhuongTien? MaPhuongTienNavigation { get; set; }
 
     [ForeignKey("MaTraiCay")]
     [InverseProperty("LoHangs")]

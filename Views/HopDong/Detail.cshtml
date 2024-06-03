@@ -1,0 +1,293 @@
+@{
+  ViewData["Title"] = "Chi tiết";
+  var hopDong = ViewData["hopDong"] as HopDong;
+  var loaiHopDong = ViewData["loaiHopDong"] as LoaiHopDong;
+  var nhanVien = ViewData["nhanVien"] as NhanVien;
+  var lstTrangThai = ViewData["lstTrangThai"] as List<TrangThaiHopDong>;
+  var lstDoanhNghiep = ViewData["lstDoanhNghiep"] as List<DoanhNghiep>;
+  var lstNhaCungCap = ViewData["lstNhaCungCap"] as List<NhaCungCap>;
+  var lstLoHang = ViewData["lstLoHang"] as List<LoHang>;
+  var lstKho = ViewData["lstKho"] as List<Kho>;
+  var lstPhuongTien = ViewData["lstPhuongTien"] as List<PhuongTien>;
+  var lstDonViTinh = ViewData["lstDonViTinh"] as List<DonViTinh>;
+  var lstTraiCay = ViewData["lstTraiCay"] as List<TraiCay>;
+  object doiTac;
+  var stt = 0;
+}
+
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <h5 class="card-header">Chi tiết hợp đồng</h5>
+      <div class="card-body">
+        <form>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-fullname">Tên hợp đồng</label>
+            <div class="input-group input-group-merge">
+              <input type="text" class="form-control" id="basic-icon-default-fullname" value="@hopDong.TenHopDong"
+                aria-label="John Doe" aria-describedby="basic-icon-default-fullname2" readonly/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Nhân viên phụ trách</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-company" class="form-control" value="@(nhanVien?.TenNhanVien ?? "")"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
+            </div>
+          </div>
+
+          @if (hopDong.IdloaiHopDong == 1)
+          {
+            doiTac = lstNhaCungCap.Where(i => i.MaNhaCungCap == hopDong.MaDoiTac).FirstOrDefault();
+          }
+          else
+          {
+            doiTac = lstDoanhNghiep.Where(i => i.MaDoanhNghiep == hopDong.MaDoiTac).FirstOrDefault();
+          }
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Đối tác</label>
+            <div class="input-group input-group-merge">
+              @if (doiTac is NhaCungCap)
+              {
+                var nhaCungCap = doiTac as NhaCungCap;
+                <input type="text" id="basic-icon-default-boPhan" class="form-control" value="@(nhaCungCap.TenNhaCungCap)"
+                  aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
+              }
+              else if (doiTac is DoanhNghiep)
+              {
+                var doanhNghiep = doiTac as DoanhNghiep;
+                <input type="text" id="basic-icon-default-boPhan" class="form-control" value="@(doanhNghiep.TenDoanhNghiep)"
+                  aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
+              }
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Ngày ký</label>
+            <div class="input-group input-group-merge">
+              <input type="DateTime" id="basic-icon-default-boPhan" class="form-control" value="@(hopDong.NgayKy)"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Tổng giá tiền</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-status" class="form-control" value="@(hopDong.TongGia) VND"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly />
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-email">Loại hợp đồng</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-email" class="form-control" value="@loaiHopDong.LoaiHopDong1"
+                aria-label="john.doe" aria-describedby="basic-icon-default-email2" readonly/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-email">Trạng thái</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-email" class="form-control" value="@(lstTrangThai.Where(i => i.IdtrangThai == hopDong.IdtrangThai).FirstOrDefault().TrangThai)"
+                aria-label="john.doe" aria-describedby="basic-icon-default-email2" readonly/>
+            </div>
+          </div>
+
+
+          <div class="table-responsive text-nowrap">
+            <table class="table table-hover" id="employeeTable">
+              <thead>
+                <tr>
+                  <th>STT</th>
+                  <th>Trái cây</th>
+                  <th>Số lượng</th>
+                  <th>Giá tiền</th>
+                  <th>Tên kho</th>
+                  <th>Phương tiện</th>
+                  <th>Trạng thái</th>
+                </tr>
+              </thead>
+              <tbody class="table-border-bottom-0">
+              @foreach (var loHang in lstLoHang)
+              {
+                var traiCay = loHang != null ? lstTraiCay.Where(c => c.MaTraiCay == loHang.MaTraiCay).FirstOrDefault() : null;
+                var phuongTien = lstPhuongTien.Where(c => c.MaPhuongTien == loHang.MaPhuongTien).FirstOrDefault();
+                var donViTinh = loHang != null ? lstDonViTinh.Where(c => c.IdDonViTinh == loHang.IdDonViTinh).FirstOrDefault() : null;
+                var kho = loHang != null ? lstKho.Where(c => c.MaKho == loHang.MaKho).FirstOrDefault() : null;
+                var trangThai = lstTrangThai.Where(c => c.IdtrangThai == loHang.IdtrangThai).FirstOrDefault();
+                <tr data-id="@loHang.MaLoHang">
+                  <td>@(++stt)</td>
+                  <td>
+                    @(traiCay?.TenTraiCay ?? "")
+                  </td>
+                  <td>
+                    @((loHang?.SoLuong.ToString() ?? "") + " " + (donViTinh?.DonViTinh1 ?? ""))
+                  </td>
+                  <td>
+                    @(loHang?.DonGia.ToString() ?? "")
+                  </td>
+                  <td>
+                    @(kho?.TenKho ?? "")
+                  </td>
+                  <td>
+                    @(phuongTien?.TenPhuongTien ?? "")
+                  </td>
+                  <td>
+                    @(trangThai?.TrangThai ?? "")
+                  </td>
+                </tr>
+              }
+              </tbody>
+            </table>
+          </div>
+
+          <button id="editBtn" type="button" class="btn btn-primary" data-id="@hopDong.MaHopDong">Edit</button>
+          <button id="saveBtn" type="submit" asp-action="Index" class="btn btn-primary">Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  document.getElementById('editBtn').addEventListener('click', function(event) {
+    var idNhanVien = this.getAttribute('data-id');
+    console.log(idNhanVien);
+    // Chuyển hướng đến trang "Edit" và gửi thêm tham số idNhanVien
+    window.location.href = '/HopDong/Edit?id=' + idNhanVien;
+  });
+
+  $('#addRowBtn').on('click', function() {
+      var matraicay = $('.matraicay').first().clone().removeClass('edit-mode').show();
+      var donvitinh = $('.donvitinh').first().clone().removeClass('edit-mode').show();
+      matraicay.prop('selectedIndex', 0);
+      donvitinh.prop('selectedIndex', 0);
+
+      var newRow = '<tr>' +
+        '<td></td>' +
+        '<td>' + $('<div>').append(matraicay).html() + '</td>' +
+        '<td><input type="text" class="form-control soluong"></td>' +
+        '<td>' + $('<div>').append(donvitinh).html() + '</td>' +
+        '<td>' +
+        '<button type="button" class="btn btn-primary save-new-row">Save</button>' +
+        '<button type="button" class="btn btn-secondary cancel-new-row">Cancel</button>' +
+        '</td>' +
+        '</tr>';
+
+      $('#employeeTable tbody').append(newRow);
+    });
+
+  $('#employeeTable').on('click', '.save-new-row', function() {
+      var newRow = $(this).closest('tr');
+      var matraicay = newRow.find('.matraicay').val();
+      var donvitinh = newRow.find('.donvitinh').val();
+      var soluong = newRow.find('.soluong').val();
+      var makho = $('#editBtn').data('id');
+      console.log(makho);
+      console.log(matraicay);
+      console.log(donvitinh);
+      console.log(soluong);
+      // Thực hiện Save dữ liệu mới vào cơ sở dữ liệu hoặc xử lý theo yêu cầu của bạn
+      $.ajax({
+          url: '/Kho/CreateChiTietKho',
+          type: 'POST',
+          data: {
+              makho: makho,
+              matraicay: matraicay,
+              donvitinh: donvitinh,
+              soluong: soluong
+          },
+          success: function(response) {
+                alert("Thêm mới thành công");
+                window.location.reload();
+          },
+          error: function(xhr, status, error) {
+              alert("Thêm mới không thành công");
+          }
+      });
+    });
+
+    $('#employeeTable').on('click', '.cancel-new-row', function() {
+      $(this).closest('tr').remove();
+    });
+</script>
+
+@section PageStyles{
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+    @* $('.edit-button').on('click', function(e) {
+      e.preventDefault();
+      console.log("asdasd");
+      var row = $(this).closest('tr');
+      row.find('.view-mode').hide();
+      row.find('.edit-mode').show();
+    }); *@
+    $(document).ready(function() {
+        $('body').on('click', '.edit-button', function(e) {
+            console.log("Edit button clicked");
+            e.preventDefault();
+            var row = $(this).closest('tr');
+            row.find('.view-mode').hide();
+            row.find('.edit-mode').show();
+        });
+
+        $('.delete-button').on('click', function(e) {
+          var id = $(this).data('id');
+          $.ajax({
+              url: '/Kho/DeleteChiTietKho',
+              type: 'POST',
+              data: {
+                  id: id
+              },
+              success: function(response) {
+                    alert("Xoá thành công");
+                    window.location.reload();
+              },
+              error: function(xhr, status, error) {
+                  alert("Xoá không thành công");
+              }
+          });
+        });
+
+        $('body').on('click', '.cancel-button', function(e) {
+            console.log("Cancel button clicked");
+            e.preventDefault();
+            var row = $(this).closest('tr');
+            row.find('.edit-mode').hide();
+            row.find('.view-mode').show();
+        });
+
+        $('body').on('click', '.save-button', function()
+        {
+            var row = $(this).closest('tr');
+            var id = row.data('id');
+            var maTraiCay = row.find('select[name="MaTraiCay"]').val();
+            var soLuong = row.find('input[name="SoLuong"]').val();
+            var idDonViTinh = row.find('select[name="IdDonViTinh"]').val();
+
+            console.log("ID:", id);
+            console.log("MaTraiCay:", maTraiCay);
+            console.log("SoLuong:", soLuong);
+            console.log("IdDonViTinh:", idDonViTinh);
+
+            $.ajax({
+                url: '/Kho/EditChiTietKho',
+                type: 'POST',
+                data: {
+                    id: id,
+                    maTraiCay: maTraiCay,
+                    soLuong: soLuong,
+                    idDonViTinh: idDonViTinh
+                },
+                success: function(response) {
+                    row.find('.view-mode').show();
+                    row.find('.edit-mode').hide();
+                    alert("Chỉnh sửa thành công");
+                    window.location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("Chỉnh sửa không thành công");
+                }
+            });
+        });
+      });
+  </script>
+}

@@ -1,0 +1,233 @@
+@model HopDong
+
+@{
+  ViewData["Title"] = "Thêm mới";
+  var lstDoanhNghiep = ViewData["lstDoanhNghiep"] as List<DoanhNghiep>;
+  var lstNhaCungCap = ViewData["lstNhaCungCap"] as List<NhaCungCap>;
+  var lstTrangThai = ViewData["lstTrangThai"] as List<TrangThaiHopDong>;
+  var lstLoHang = ViewData["lstLoHang"] as List<LoHang>;
+  var lstKho = ViewData["lstKho"] as List<Kho>;
+  var lstPhuongTien = ViewData["lstPhuongTien"] as List<PhuongTien>;
+  var lstDonViTinh = ViewData["lstDonViTinh"] as List<DonViTinh>;
+  var lstTraiCay = ViewData["lstTraiCay"] as List<TraiCay>;
+  object doiTac;
+  var stt = 0;
+}
+
+<!-- Basic Layout -->
+<div class="row">
+  <div class="col-xl">
+    <div class="card mb-4">
+      <h5 class="card-header">Thêm mới hợp đồng</h5>
+      <div class="card-body">
+        <form asp-action="Create">
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-fullname">Tên hợp đồng</label>
+            <div class="input-group input-group-merge">
+              <input type="text" class="form-control" id="basic-icon-default-fullname" asp-for="@Model.TenHopDong"
+                aria-label="John Doe" aria-describedby="basic-icon-default-fullname2"/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Nhân viên phụ trách</label>
+            <div class="input-group input-group-merge">
+              <select class="form-select matraicay" asp-items="@(ViewData["lstNhanVien"] as SelectList)" asp-for="@Model.MaNhanVien">
+                <option value="">-- Chọn nhân viên --</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Đối tác</label>
+            <div class="input-group input-group-merge">
+              @* @if (hopDong.IdloaiHopDong == 1)
+              {
+                <select class="form-select" id="doiTacSelect" asp-items="@(new SelectList(lstNhaCungCap, "MaNhaCungCap", "TenNhaCungCap", hopDong?.MaDoiTac))" asp-for="@Model.MaDoiTac">
+                </select>
+              }
+              else
+              {
+                <select class="form-select" id="doiTacSelect" asp-items="@(new SelectList(lstDoanhNghiep, "MaDoanhNghiep", "TenDoanhNghiep", hopDong?.MaDoiTac))" asp-for="@Model.MaDoiTac">
+                </select>
+              } *@
+              <select class="form-select" id="doiTacSelect" asp-for="@Model.MaDoiTac">
+                <option value="">-- Chọn đối tác --</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Ngày ký</label>
+            <div class="input-group input-group-merge">
+              <input type="datetime-local" id="basic-icon-default-boPhan" class="form-control"
+                aria-label="Ngày ký" aria-describedby="basic-icon-default-company2"
+                asp-for="@Model.NgayKy"/>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-company">Tổng giá tiền</label>
+            <div class="input-group input-group-merge">
+              <input type="text" id="basic-icon-default-status" class="form-control"
+                aria-label="ACME Inc." aria-describedby="basic-icon-default-company2" readonly asp-for="@Model.TongGia"/>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-email">Loại hợp đồng</label>
+            <div class="input-group input-group-merge">
+              <select class="form-select" id="loaiHopDongSelect" asp-items="@(ViewData["lstLoaiHopDong"] as SelectList)" asp-for="@Model.IdloaiHopDong">
+                <option value="">-- Chọn loại hợp đồng --</option>
+              </select>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label" for="basic-icon-default-email">Trạng thái</label>
+            <div class="input-group input-group-merge">
+              <select class="form-select" asp-items="@(ViewData["lstTrangThaiSelectList"] as SelectList)" asp-for="@Model.IdtrangThai">
+                <option value="">-- Chọn trạng thái --</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="editBtn" type="submit" class="btn btn-primary">Save</button>
+          <button id="saveBtn" type="submit" asp-action="Index" class="btn btn-primary">Back</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+@section PageStyles{
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script>
+      document.addEventListener('DOMContentLoaded', function () {
+          var loaiHopDongSelect = document.getElementById('loaiHopDongSelect');
+      console.log(loaiHopDongSelect);
+      loaiHopDongSelect.addEventListener('change', function () {
+        updateDoiTacList(this.value);
+      });
+      function updateDoiTacList(loaiHopDongId)
+      {
+        fetch(`/HopDong/GetDoiTacByLoaiHopDong?loaiHopDongId=${loaiHopDongId}`)
+          .then(response => {
+            console.log("Response status: ", response.status);
+            return response.json();
+          })
+          .then(data => {
+            var doiTacSelect = document.getElementById('doiTacSelect');
+            doiTacSelect.innerHTML = '';
+            console.log("Data received: ", data);
+            console.log(`/HopDong/GetDoiTacByLoaiHopDong?loaiHopDongId=${loaiHopDongId}`);
+            data.forEach(function (item) {
+              console.log("item " + item);
+              var option = document.createElement('option');
+              option.value = item.id;
+              console.log("item.id" + item.id);
+              option.text = item.ten;
+              console.log("item.ten" + item.ten);
+              doiTacSelect.appendChild(option);
+            });
+
+            // Set the selected value to the initial value from the model if exists
+          });
+      }
+
+      // Trigger the change event on page load to initialize the "Đối tác" select
+      var loaiHopDongId = loaiHopDongSelect.value;
+      updateDoiTacList(loaiHopDongId);
+
+
+
+      });
+
+  </script>
+  <script>
+    @* $('.edit-button').on('click', function(e) {
+      e.preventDefault();
+      console.log("asdasd");
+      var row = $(this).closest('tr');
+      row.find('.view-mode').hide();
+      row.find('.edit-mode').show();
+    }); *@
+    $(document).ready(function() {
+        $('body').on('click', '.edit-button', function(e) {
+            console.log("Edit button clicked");
+            e.preventDefault();
+            var row = $(this).closest('tr');
+            var id = row.data('id');
+            console.log(id);
+            window.location.href = '/HopDong/EditLoHang?id=' + id;
+        });
+
+        $('.delete-button').on('click', function(e) {
+          var id = $(this).data('id');
+          var userConfirmed = confirm("Bạn có chắc chắn muốn xóa không?");
+          if (userConfirmed)
+          {
+              // Thực hiện hành động xóa
+              $.ajax({
+                  url: '/HopDong/DeleteLoHang',
+                  type: 'POST',
+                  data: {
+                      id: id
+                  },
+                  success: function(response) {
+                        alert("Xoá thành công");
+                        window.location.reload();
+                  },
+                  error: function(xhr, status, error) {
+                      alert("Xoá không thành công");
+                  }
+              });
+          } else {
+              // Nếu người dùng hủy, không làm gì
+              console.log('Người dùng đã hủy xóa');
+          }
+
+
+        });
+
+        $('body').on('click', '.cancel-button', function(e) {
+            console.log("Cancel button clicked");
+            e.preventDefault();
+            var row = $(this).closest('tr');
+            row.find('.edit-mode').hide();
+            row.find('.view-mode').show();
+        });
+
+        $('body').on('click', '.save-button', function()
+        {
+            var row = $(this).closest('tr');
+            var id = row.data('id');
+            var maTraiCay = row.find('select[name="MaTraiCay"]').val();
+            var soLuong = row.find('input[name="SoLuong"]').val();
+            var idDonViTinh = row.find('select[name="IdDonViTinh"]').val();
+
+            console.log("ID:", id);
+            console.log("MaTraiCay:", maTraiCay);
+            console.log("SoLuong:", soLuong);
+            console.log("IdDonViTinh:", idDonViTinh);
+
+            $.ajax({
+                url: '/Kho/EditChiTietKho',
+                type: 'POST',
+                data: {
+                    id: id,
+                    maTraiCay: maTraiCay,
+                    soLuong: soLuong,
+                    idDonViTinh: idDonViTinh
+                },
+                success: function(response) {
+                    row.find('.view-mode').show();
+                    row.find('.edit-mode').hide();
+                    alert("Chỉnh sửa thành công");
+                    window.location.reload();
+                },
+                error: function(xhr, status, error) {
+                    alert("Chỉnh sửa không thành công");
+                }
+            });
+        });
+      });
+  </script>
+}

@@ -73,8 +73,8 @@
                 </div>
               </div>
               <div class="edit-mode" style="display:none;">
-                <button class="btn btn-primary save-button">Lưu</button>
-                <button class="btn btn-secondary cancel-button">Hủy</button>
+                <button class="btn btn-primary save-button">Save</button>
+                <button class="btn btn-secondary cancel-button">Cancel</button>
               </div>
             </td>
           </tr>
@@ -126,8 +126,8 @@
         '<td><input type="text" class="form-control tenkho"></td>' +
         '<td><input type="text" class="form-control diachi"></td>' +
         '<td>' +
-        '<button type="button" class="btn btn-primary save-new-row">Lưu</button>' +
-        '<button type="button" class="btn btn-secondary cancel-new-row">Hủy</button>' +
+        '<button type="button" class="btn btn-primary save-new-row">Save</button>' +
+        '<button type="button" class="btn btn-secondary cancel-new-row">Cancel</button>' +
         '</td>' +
         '</tr>';
 
@@ -139,7 +139,7 @@
       var tenkho = newRow.find('.tenkho').val();
       var diachi = newRow.find('.diachi').val();
 
-      // Thực hiện lưu dữ liệu mới vào cơ sở dữ liệu hoặc xử lý theo yêu cầu của bạn
+      // Thực hiện Save dữ liệu mới vào cơ sở dữ liệu hoặc xử lý theo yêu cầu của bạn
 
       @* newRow.find('.view-mode').text(newStatus);
       newRow.find('.edit-mode input').val(newStatus);

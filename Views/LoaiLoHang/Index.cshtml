@@ -1,6 +1,5 @@
 @{
   ViewData["Title"] = "Loại hợp đồng";
-  var lstLoaiLoHang = ViewData["lstLoaiLoHang"] as List<LoaiLoHang>;
   var stt = 0;
 }
 
@@ -10,7 +9,7 @@
       @successMessage
   </div>
 } *@
-<div class="card">
+@* <div class="card">
   <h5 class="card-header">Danh sách loại lô hàng</h5>
   <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
@@ -48,8 +47,8 @@
                 </div>
               </div>
               <div class="edit-mode" style="display:none;">
-                <button class="btn btn-primary save-button">Lưu</button>
-                <button class="btn btn-secondary cancel-button">Hủy</button>
+                <button class="btn btn-primary save-button">Save</button>
+                <button class="btn btn-secondary cancel-button">Cancel</button>
               </div>
             </td>
           </tr>
@@ -57,7 +56,7 @@
       </tbody>
     </table>
   </div>
-</div>
+</div> *@
 
 
 
@@ -126,8 +125,8 @@
         '<td></td>' +
         '<td><input type="text" class="form-control new-status-input"></td>' +
         '<td>' +
-        '<button class="btn btn-primary save-new-row">Lưu</button>' +
-        '<button class="btn btn-secondary cancel-new-row">Hủy</button>' +
+        '<button class="btn btn-primary save-new-row">Save</button>' +
+        '<button class="btn btn-secondary cancel-new-row">Cancel</button>' +
         '</td>' +
         '</tr>';
 
@@ -138,7 +137,7 @@
       var newRow = $(this).closest('tr');
       var newStatus = newRow.find('.new-status-input').val();
 
-      // Thực hiện lưu dữ liệu mới vào cơ sở dữ liệu hoặc xử lý theo yêu cầu của bạn
+      // Thực hiện Save dữ liệu mới vào cơ sở dữ liệu hoặc xử lý theo yêu cầu của bạn
 
       newRow.find('.view-mode').text(newStatus);
       newRow.find('.edit-mode input').val(newStatus);

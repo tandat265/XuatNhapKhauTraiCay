@@ -21,12 +21,6 @@ public partial class PhuongTien
     [Column("IDTrangThai")]
     public int? IdtrangThai { get; set; }
 
-    [InverseProperty("MaPhuongTienNavigation")]
-    public virtual ICollection<ChiTietHopDong> ChiTietHopDongs { get; set; } = new List<ChiTietHopDong>();
-
-    [InverseProperty("MaPhuongTienNavigation")]
-    public virtual ICollection<DoanhNghiepPhuongTien> DoanhNghiepPhuongTiens { get; set; } = new List<DoanhNghiepPhuongTien>();
-
     [ForeignKey("IdloaiPhuongTien")]
     [InverseProperty("PhuongTiens")]
     public virtual LoaiPhuongTien? IdloaiPhuongTienNavigation { get; set; }
@@ -36,5 +30,5 @@ public partial class PhuongTien
     public virtual TrangThaiPhuongTien? IdtrangThaiNavigation { get; set; }
 
     [InverseProperty("MaPhuongTienNavigation")]
-    public virtual ICollection<KhoPhuongTien> KhoPhuongTiens { get; set; } = new List<KhoPhuongTien>();
+    public virtual ICollection<LoHang> LoHangs { get; set; } = new List<LoHang>();
 }

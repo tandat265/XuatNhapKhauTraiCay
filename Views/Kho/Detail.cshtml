@@ -67,8 +67,8 @@
                           </div>
                         </div>
                         <div class="edit-mode" style="display:none;">
-                          <button type="button" class="btn btn-primary save-button">Lưu</button>
-                          <button type="button" class="btn btn-secondary cancel-button">Hủy</button>
+                          <button type="button" class="btn btn-primary save-button">Save</button>
+                          <button type="button" class="btn btn-secondary cancel-button">Cancel</button>
                         </div>
                       </td>
                     </tr>
@@ -106,8 +106,8 @@
         '<td><input type="text" class="form-control soluong"></td>' +
         '<td>' + $('<div>').append(donvitinh).html() + '</td>' +
         '<td>' +
-        '<button type="button" class="btn btn-primary save-new-row">Lưu</button>' +
-        '<button type="button" class="btn btn-secondary cancel-new-row">Hủy</button>' +
+        '<button type="button" class="btn btn-primary save-new-row">Save</button>' +
+        '<button type="button" class="btn btn-secondary cancel-new-row">Cancel</button>' +
         '</td>' +
         '</tr>';
 
@@ -124,7 +124,7 @@
       console.log(matraicay);
       console.log(donvitinh);
       console.log(soluong);
-      // Thực hiện lưu dữ liệu mới vào cơ sở dữ liệu hoặc xử lý theo yêu cầu của bạn
+      // Thực hiện Save dữ liệu mới vào cơ sở dữ liệu hoặc xử lý theo yêu cầu của bạn
       $.ajax({
           url: '/Kho/CreateChiTietKho',
           type: 'POST',

@@ -17,15 +17,11 @@ public partial class DbXuatNhapKhauContext : DbContext
 
     public virtual DbSet<BoPhan> BoPhans { get; set; }
 
-    public virtual DbSet<ChiTietHopDong> ChiTietHopDongs { get; set; }
-
     public virtual DbSet<ChiTietKho> ChiTietKhos { get; set; }
 
     public virtual DbSet<ChucVu> ChucVus { get; set; }
 
     public virtual DbSet<DoanhNghiep> DoanhNghieps { get; set; }
-
-    public virtual DbSet<DoanhNghiepPhuongTien> DoanhNghiepPhuongTiens { get; set; }
 
     public virtual DbSet<DonViTinh> DonViTinhs { get; set; }
 
@@ -35,13 +31,9 @@ public partial class DbXuatNhapKhauContext : DbContext
 
     public virtual DbSet<Kho> Khos { get; set; }
 
-    public virtual DbSet<KhoPhuongTien> KhoPhuongTiens { get; set; }
-
     public virtual DbSet<LoHang> LoHangs { get; set; }
 
     public virtual DbSet<LoaiHopDong> LoaiHopDongs { get; set; }
-
-    public virtual DbSet<LoaiLoHang> LoaiLoHangs { get; set; }
 
     public virtual DbSet<LoaiPhuongTien> LoaiPhuongTiens { get; set; }
 
@@ -63,8 +55,6 @@ public partial class DbXuatNhapKhauContext : DbContext
 
     public virtual DbSet<TrangThaiPhuongTien> TrangThaiPhuongTiens { get; set; }
 
-    public virtual DbSet<TrangThaiVanChuyen> TrangThaiVanChuyens { get; set; }
-
     public virtual DbSet<ViewChiTietKho> ViewChiTietKhos { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -76,19 +66,6 @@ public partial class DbXuatNhapKhauContext : DbContext
         modelBuilder.Entity<BoPhan>(entity =>
         {
             entity.HasKey(e => e.IdboPhan).HasName("PK__BoPhan__0E503FF5B251FB90");
-        });
-
-        modelBuilder.Entity<ChiTietHopDong>(entity =>
-        {
-            entity.HasKey(e => e.MaChiTietHopDong).HasName("PK__ChiTietH__0DA24B73CD4ACACF");
-
-            entity.HasOne(d => d.IdtrangThaiNavigation).WithMany(p => p.ChiTietHopDongs).HasConstraintName("FK_ChiTietHopDong_TrangThaiHopDong");
-
-            entity.HasOne(d => d.MaHopDongNavigation).WithMany(p => p.ChiTietHopDongs).HasConstraintName("FK_ChiTietHopDong_HopDong");
-
-            entity.HasOne(d => d.MaLoHangNavigation).WithMany(p => p.ChiTietHopDongs).HasConstraintName("FK_ChiTietHopDong_LoHang");
-
-            entity.HasOne(d => d.MaPhuongTienNavigation).WithMany(p => p.ChiTietHopDongs).HasConstraintName("FK_ChiTietHopDong_PhuongTien");
         });
 
         modelBuilder.Entity<ChiTietKho>(entity =>
@@ -112,15 +89,6 @@ public partial class DbXuatNhapKhauContext : DbContext
             entity.HasKey(e => e.MaDoanhNghiep).HasName("PK__DoanhNgh__4D184EF6AE6A84B7");
 
             entity.HasOne(d => d.MaQuocGiaNavigation).WithMany(p => p.DoanhNghieps).HasConstraintName("FK_DoanhNghiep_QuocGia");
-        });
-
-        modelBuilder.Entity<DoanhNghiepPhuongTien>(entity =>
-        {
-            entity.HasOne(d => d.IdtrangThaiNavigation).WithMany(p => p.DoanhNghiepPhuongTiens).HasConstraintName("FK_DoanhNghiep_PhuongTien_TrangThaiVanChuyen");
-
-            entity.HasOne(d => d.MaDoanhNghiepNavigation).WithMany(p => p.DoanhNghiepPhuongTiens).HasConstraintName("FK_DoanhNghiep_PhuongTien_DoanhNghiep");
-
-            entity.HasOne(d => d.MaPhuongTienNavigation).WithMany(p => p.DoanhNghiepPhuongTiens).HasConstraintName("FK_DoanhNghiep_PhuongTien_PhuongTien");
         });
 
         modelBuilder.Entity<DonViTinh>(entity =>
@@ -157,24 +125,19 @@ public partial class DbXuatNhapKhauContext : DbContext
             entity.HasKey(e => e.MaKho).HasName("PK__Kho__3BDA93503DC9AB2D");
         });
 
-        modelBuilder.Entity<KhoPhuongTien>(entity =>
-        {
-            entity.HasOne(d => d.IdtrangThaiNavigation).WithMany(p => p.KhoPhuongTiens).HasConstraintName("FK_Kho_PhuongTien_TrangThaiVanChuyen");
-
-            entity.HasOne(d => d.MaKhoNavigation).WithMany(p => p.KhoPhuongTiens).HasConstraintName("FK_Kho_PhuongTien_Kho");
-
-            entity.HasOne(d => d.MaPhuongTienNavigation).WithMany(p => p.KhoPhuongTiens).HasConstraintName("FK_Kho_PhuongTien_PhuongTien");
-        });
-
         modelBuilder.Entity<LoHang>(entity =>
         {
             entity.HasKey(e => e.MaLoHang).HasName("PK__tbLoHang__E81C10B22CE99985");
 
             entity.HasOne(d => d.IdDonViTinhNavigation).WithMany(p => p.LoHangs).HasConstraintName("FK_LoHang_DonViTinh");
 
-            entity.HasOne(d => d.IdloaiLoHangNavigation).WithMany(p => p.LoHangs).HasConstraintName("FK_LoHang_LoaiLoHang");
+            entity.HasOne(d => d.IdtrangThaiNavigation).WithMany(p => p.LoHangs).HasConstraintName("FK_LoHang_TrangThaiHopDong");
+
+            entity.HasOne(d => d.MaHopDongNavigation).WithMany(p => p.LoHangs).HasConstraintName("FK_LoHang_HopDong");
 
             entity.HasOne(d => d.MaKhoNavigation).WithMany(p => p.LoHangs).HasConstraintName("FK_LoHang_Kho");
+
+            entity.HasOne(d => d.MaPhuongTienNavigation).WithMany(p => p.LoHangs).HasConstraintName("FK_LoHang_PhuongTien");
 
             entity.HasOne(d => d.MaTraiCayNavigation).WithMany(p => p.LoHangs).HasConstraintName("FK_LoHang_TraiCay");
         });
@@ -182,11 +145,6 @@ public partial class DbXuatNhapKhauContext : DbContext
         modelBuilder.Entity<LoaiHopDong>(entity =>
         {
             entity.HasKey(e => e.IdloaiHopDong).HasName("PK__LoaiHopD__6C2A0CFF78795BF3");
-        });
-
-        modelBuilder.Entity<LoaiLoHang>(entity =>
-        {
-            entity.HasKey(e => e.IdloaiLoHang).HasName("PK__LoaiLoHa__FF67698FC02BA55C");
         });
 
         modelBuilder.Entity<LoaiPhuongTien>(entity =>
@@ -210,9 +168,6 @@ public partial class DbXuatNhapKhauContext : DbContext
         {
             entity.HasKey(e => e.MaNhanVien).HasName("PK__NhanVien__77B2CA47FC631E71");
 
-            entity.Property(e => e.Cccd).IsFixedLength();
-            entity.Property(e => e.Phone).IsFixedLength();
-
             entity.HasOne(d => d.IdChucVuNavigation).WithMany(p => p.NhanViens).HasConstraintName("FK_NhanVien_ChucVu");
 
             entity.HasOne(d => d.IdboPhanNavigation).WithMany(p => p.NhanViens).HasConstraintName("FK_NhanVien_BoPhan");
@@ -226,7 +181,7 @@ public partial class DbXuatNhapKhauContext : DbContext
 
             entity.HasOne(d => d.IdloaiPhuongTienNavigation).WithMany(p => p.PhuongTiens).HasConstraintName("FK_PhuongTien_LoaiPhuongTien");
 
-            entity.HasOne(d => d.IdtrangThaiNavigation).WithMany(p => p.PhuongTiens).HasConstraintName("FK_PhuongTien_TrangThaiPhuongTien");
+            entity.HasOne(d => d.IdtrangThaiNavigation).WithMany(p => p.PhuongTiens).HasConstraintName("FK_PhuongTien_TrangThaiVanChuyen");
         });
 
         modelBuilder.Entity<QuocGium>(entity =>
@@ -249,11 +204,6 @@ public partial class DbXuatNhapKhauContext : DbContext
         modelBuilder.Entity<TrangThaiPhuongTien>(entity =>
         {
             entity.HasKey(e => e.IdtrangThai).HasName("PK__TrangTha__55658600F9E73C5A");
-        });
-
-        modelBuilder.Entity<TrangThaiVanChuyen>(entity =>
-        {
-            entity.Property(e => e.TrangThai).IsFixedLength();
         });
 
         modelBuilder.Entity<ViewChiTietKho>(entity =>

@@ -30,9 +30,6 @@ public partial class HopDong
     [Column("IDTrangThai")]
     public int? IdtrangThai { get; set; }
 
-    [InverseProperty("MaHopDongNavigation")]
-    public virtual ICollection<ChiTietHopDong> ChiTietHopDongs { get; set; } = new List<ChiTietHopDong>();
-
     [ForeignKey("IdloaiHopDong")]
     [InverseProperty("HopDongs")]
     public virtual LoaiHopDong? IdloaiHopDongNavigation { get; set; }
@@ -40,6 +37,9 @@ public partial class HopDong
     [ForeignKey("IdtrangThai")]
     [InverseProperty("HopDongs")]
     public virtual TrangThaiHopDong? IdtrangThaiNavigation { get; set; }
+
+    [InverseProperty("MaHopDongNavigation")]
+    public virtual ICollection<LoHang> LoHangs { get; set; } = new List<LoHang>();
 
     [ForeignKey("MaDoiTac")]
     [InverseProperty("HopDongs")]
