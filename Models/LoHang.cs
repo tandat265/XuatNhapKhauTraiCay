@@ -18,9 +18,6 @@ public partial class LoHang
 
     public double? DonGia { get; set; }
 
-    [Column("IDLoaiLoHang")]
-    public int? IdloaiLoHang { get; set; }
-
     public int? MaKho { get; set; }
 
     public int? IdDonViTinh { get; set; }

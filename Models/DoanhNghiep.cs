@@ -23,9 +23,6 @@ public partial class DoanhNghiep
 
     public int? MaQuocGia { get; set; }
 
-    [InverseProperty("MaDoiTacNavigation")]
-    public virtual ICollection<HopDong> HopDongs { get; set; } = new List<HopDong>();
-
     [ForeignKey("MaQuocGia")]
     [InverseProperty("DoanhNghieps")]
     public virtual QuocGium? MaQuocGiaNavigation { get; set; }

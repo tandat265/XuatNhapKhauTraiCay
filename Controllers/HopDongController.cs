@@ -84,6 +84,18 @@ public class HopDongController : Controller
   public async Task<IActionResult> EditLoHang(int id, [Bind("MaTraiCay,SoLuong,DonGia,MaKho,IdDonViTinh,MaPhuongTien,IdtrangThai")] LoHang loHangEdit)
   {
     var loHang = await dbContext.LoHangs.FindAsync(id);
+    var hopDong = await dbContext.HopDongs.FindAsync(loHang.MaHopDong);
+    if (hopDong.TongGia != null)
+    {
+      var giaCu = loHang.DonGia != null ? loHang.DonGia : 0;
+      var giaMoi = loHangEdit.DonGia != null ? loHangEdit.DonGia : 0;
+      hopDong.TongGia = hopDong.TongGia - giaCu + giaMoi;
+    }
+    else
+    {
+      var giaMoi = loHangEdit.DonGia != null ? loHangEdit.DonGia : 0;
+      hopDong.TongGia = giaMoi;
+    }
     if (loHang != null)
     {
       loHang.MaTraiCay = loHangEdit.MaTraiCay;
@@ -94,6 +106,7 @@ public class HopDongController : Controller
       loHang.MaPhuongTien = loHangEdit.MaPhuongTien;
       loHang.IdtrangThai = loHangEdit.IdtrangThai;
       dbContext.Update(loHang);
+      dbContext.Update(hopDong);
       await dbContext.SaveChangesAsync();
     }
     return RedirectToAction("Edit", new {id = loHang.MaHopDong});
@@ -151,7 +164,7 @@ public class HopDongController : Controller
     hopDong.MaNhanVien = hopDongCreate.MaNhanVien;
     hopDong.MaDoiTac = hopDongCreate.MaDoiTac;
     hopDong.NgayKy = hopDongCreate.NgayKy;
-    hopDong.TongGia = hopDongCreate.TongGia;
+    hopDong.TongGia = 0;
     hopDong.IdloaiHopDong = hopDongCreate.IdloaiHopDong;
     hopDong.IdtrangThai = hopDongCreate.IdtrangThai;
     dbContext.Add(hopDong);
@@ -202,6 +215,18 @@ public class HopDongController : Controller
       loHang.IdtrangThai = loHangCreate.IdtrangThai;
       loHang.MaHopDong = loHangCreate.MaHopDong;
       dbContext.Add(loHang);
+      var hopDong = await dbContext.HopDongs.FindAsync(loHang.MaHopDong);
+      if (hopDong.TongGia != null)
+      {
+        var giaMoi = loHang.DonGia != null ? loHang.DonGia : 0;
+        hopDong.TongGia = hopDong.TongGia + giaMoi;
+      }
+      else
+      {
+        var giaMoi = loHang.DonGia != null ? loHang.DonGia : 0;
+        hopDong.TongGia = giaMoi;
+      }
+      dbContext.Update(hopDong);
       await dbContext.SaveChangesAsync();
     }
     return RedirectToAction("Edit", new {id = loHang.MaHopDong});

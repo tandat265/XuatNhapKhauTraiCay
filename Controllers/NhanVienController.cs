@@ -103,13 +103,9 @@ public class NhanVienController : Controller
   {
     var nhanVien = await dbContext.NhanViens.Where(item => item.MaNhanVien == id).FirstOrDefaultAsync();
     ViewData["nhanVien"] = nhanVien;
-    var chucVus = await dbContext.ChucVus.ToListAsync();
-    var chucVu = new SelectList(chucVus, "IdChucVu", "ChucVu1", nhanVien.IdChucVu);
-    ViewData["lstChucVu"] = chucVu;
-    var boPhans = await dbContext.BoPhans.ToListAsync();
-    ViewData["lstBoPhan"] = new SelectList(boPhans, "IdboPhan", "TenBoPhan", nhanVien.IdboPhan);
-    var trangThais = await dbContext.TrangThaiNhanViens.ToListAsync();
-    ViewData["lstTrangThai"] = new SelectList(trangThais, "IdtrangThai", "TrangThai", nhanVien.IdtrangThai);
+    ViewData["chucVu"] = await dbContext.ChucVus.Where(item => item.IdChucVu == nhanVien.IdChucVu).FirstOrDefaultAsync();
+    ViewData["boPhan"] = await dbContext.BoPhans.Where(item => item.IdboPhan == nhanVien.IdboPhan).FirstOrDefaultAsync();
+    ViewData["trangThai"] = await dbContext.TrangThaiNhanViens.Where(item => item.IdtrangThai == nhanVien.IdtrangThai).FirstOrDefaultAsync();
     return View(nhanVien);
   }
 

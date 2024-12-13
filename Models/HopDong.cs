@@ -41,14 +41,6 @@ public partial class HopDong
     [InverseProperty("MaHopDongNavigation")]
     public virtual ICollection<LoHang> LoHangs { get; set; } = new List<LoHang>();
 
-    [ForeignKey("MaDoiTac")]
-    [InverseProperty("HopDongs")]
-    public virtual NhaCungCap? MaDoiTac1 { get; set; }
-
-    [ForeignKey("MaDoiTac")]
-    [InverseProperty("HopDongs")]
-    public virtual DoanhNghiep? MaDoiTacNavigation { get; set; }
-
     [ForeignKey("MaNhanVien")]
     [InverseProperty("HopDongs")]
     public virtual NhanVien? MaNhanVienNavigation { get; set; }

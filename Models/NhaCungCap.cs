@@ -23,9 +23,6 @@ public partial class NhaCungCap
     [StringLength(20)]
     public string? Sđt { get; set; }
 
-    [InverseProperty("MaDoiTac1")]
-    public virtual ICollection<HopDong> HopDongs { get; set; } = new List<HopDong>();
-
     [ForeignKey("MaTraiCay")]
     [InverseProperty("NhaCungCaps")]
     public virtual TraiCay? MaTraiCayNavigation { get; set; }
